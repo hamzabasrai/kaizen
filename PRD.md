@@ -395,6 +395,10 @@ CREATE INDEX idx_countdowns_target_date ON countdowns(target_date);
 ```
 kaizen/
 ├── app/
+│   ├── (auth)/
+│   │   ├── _layout.tsx           # Auth layout (no tabs)
+│   │   ├── login.tsx             # Login screen
+│   │   └── signup.tsx            # Signup screen
 │   ├── (tabs)/
 │   │   ├── _layout.tsx           # Tab navigator configuration
 │   │   ├── habits.tsx            # Habits list screen
@@ -408,7 +412,7 @@ kaizen/
 │   │   └── new.tsx               # Create new countdown
 │   ├── settings.tsx              # App settings screen
 │   ├── _layout.tsx               # Root layout with providers
-│   └── index.tsx                 # Redirect to habits
+│   └── index.tsx                 # Redirect to habits (protected)
 ├── components/
 │   ├── habit/
 │   │   ├── HabitCard.tsx         # Habit card with grid
@@ -432,6 +436,8 @@ kaizen/
 │   ├── useHabitsStore.ts         # Zustand habit state
 │   ├── useCountdownsStore.ts     # Zustand countdown state
 │   └── useThemeStore.ts          # Theme preferences
+├── context/
+│   └── AuthContext.tsx           # Authentication state management
 ├── lib/
 │   ├── supabase.ts               # Supabase client configuration
 │   ├── notifications.ts          # Notification handlers
@@ -471,6 +477,13 @@ kaizen/
 
 - [x] Setup Expo project with required dependencies
 - [x] Configure Supabase database and authentication
+- [x] Implement authentication and authorization flow
+  - [x] Create AuthContext for managing authentication state
+  - [x] Build login screen with email/password authentication
+  - [x] Build signup screen with email/password registration
+  - [x] Add anonymous authentication option
+  - [x] Implement protected route guards
+  - [x] Handle auth state persistence and auto-login
 - [x] Implement basic navigation structure
 - [x] Create data models and API services
 - [x] Setup Zustand stores
