@@ -477,7 +477,7 @@ kaizen/
 
 ### Phase 2: Habit Tracking (Week 3-4)
 
-- [ ] Build habit list screen
+- [x] Build habit list screen
 - [ ] Implement GitHub-style contribution grid
 - [ ] Create calendar picker modal
 - [ ] Add create/edit habit flow

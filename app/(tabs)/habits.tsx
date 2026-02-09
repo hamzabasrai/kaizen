@@ -1,50 +1,63 @@
 import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
-import { useEffect } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useHabitsStore } from '../../store/useHabitsStore';
 import { useTheme } from '../../store/useTheme';
 import { Link } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
+import { HabitCard } from '../../components/habit/HabitCard';
+import { Habit, HabitCompletion } from '../../types/habit';
+import * as habitService from '../../services/habits';
+
+interface HabitWithCompletions extends Habit {
+  completions: HabitCompletion[];
+}
 
 export default function HabitsScreen() {
   const { habits, fetchHabits, isLoading } = useHabitsStore();
   const { isDark } = useTheme();
+  const [habitsWithCompletions, setHabitsWithCompletions] = useState<HabitWithCompletions[]>([]);
+
+  const loadCompletions = useCallback(async () => {
+    const habitsData = await Promise.all(
+      habits.map(async (habit) => {
+        const completions = await habitService.getHabitCompletions(habit.id);
+        return { ...habit, completions };
+      })
+    );
+    setHabitsWithCompletions(habitsData);
+  }, [habits]);
 
   useEffect(() => {
     fetchHabits();
   }, []);
 
-  const renderHabit = ({ item }: { item: typeof habits[0] }) => (
+  useEffect(() => {
+    if (habits.length > 0) {
+      loadCompletions();
+    }
+  }, [habits, loadCompletions]);
+
+  const renderHabit = ({ item }: { item: HabitWithCompletions }) => (
     <Link href={`/habit/${item.id}`} asChild>
-      <TouchableOpacity
-        style={[
-          styles.habitCard,
-          { backgroundColor: isDark ? '#2c2c2e' : '#f2f2f7' }
-        ]}
-      >
-        <View style={styles.habitContent}>
-          <Text style={styles.habitIcon}>{item.icon || '✓'}</Text>
-          <View style={styles.habitInfo}>
-            <Text style={[styles.habitName, { color: isDark ? '#fff' : '#000' }]}>
-              {item.name}
-            </Text>
-            <Text style={[styles.habitFrequency, { color: isDark ? '#888' : '#666' }]}>
-              {item.frequency_goal}x per {item.frequency_period}
-            </Text>
-          </View>
-        </View>
-      </TouchableOpacity>
+      <HabitCard 
+        habit={item} 
+        completions={item.completions}
+      />
     </Link>
   );
 
   return (
     <View style={[styles.container, { backgroundColor: isDark ? '#000' : '#fff' }]}>
       <FlatList
-        data={habits}
+        data={habitsWithCompletions}
         renderItem={renderHabit}
         keyExtractor={(item) => item.id}
         contentContainerStyle={styles.list}
         refreshing={isLoading}
-        onRefresh={fetchHabits}
+        onRefresh={() => {
+          fetchHabits();
+          loadCompletions();
+        }}
         ListEmptyComponent={
           <View style={styles.emptyState}>
             <Text style={[styles.emptyText, { color: isDark ? '#888' : '#666' }]}>
@@ -68,30 +81,6 @@ const styles = StyleSheet.create({
   },
   list: {
     padding: 16,
-  },
-  habitCard: {
-    padding: 16,
-    borderRadius: 12,
-    marginBottom: 12,
-  },
-  habitContent: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  habitIcon: {
-    fontSize: 24,
-    marginRight: 12,
-  },
-  habitInfo: {
-    flex: 1,
-  },
-  habitName: {
-    fontSize: 17,
-    fontWeight: '600',
-    marginBottom: 4,
-  },
-  habitFrequency: {
-    fontSize: 14,
   },
   emptyState: {
     alignItems: 'center',
