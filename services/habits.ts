@@ -198,17 +198,17 @@ export function calculateHabitStats(completions: HabitCompletion[]) {
 		};
 	}
 
+	const today = new Date();
+	today.setHours(0, 0, 0, 0);
+
 	const sortedCompletions = [...completions]
-		.filter(c => c.completed)
+		.filter(c => c.completed && new Date(c.date).getTime() <= today.getTime())
 		.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
 	let currentStreak = 0;
 	let longestStreak = 0;
 	let tempStreak = 0;
 	let prevDate: Date | null = null;
-
-	const today = new Date();
-	today.setHours(0, 0, 0, 0);
 
 	for (const completion of sortedCompletions) {
 		const completionDate = new Date(completion.date);
