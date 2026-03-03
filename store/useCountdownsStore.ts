@@ -69,6 +69,7 @@ export const useCountdownsStore = create<CountdownsState>()(
 				try {
 					await countdownService.createCountdown(countdown);
 					await get().fetchCountdowns();
+					set(s => ({ loadingCount: s.loadingCount - 1 }));
 				} catch (err) {
 					set(s => ({
 						error:
@@ -136,6 +137,7 @@ export const useCountdownsStore = create<CountdownsState>()(
 				try {
 					await countdownService.markCountdownComplete(id);
 					await get().fetchCountdowns();
+					set(s => ({ loadingCount: s.loadingCount - 1 }));
 				} catch (err) {
 					set(s => ({
 						error:
