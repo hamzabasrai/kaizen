@@ -26,10 +26,12 @@ export async function getCountdowns(): Promise<Countdown[]> {
 }
 
 export async function getCountdownById(id: string): Promise<Countdown | null> {
+	const userId = await requireUserId();
 	const { data, error } = await supabase
 		.from('countdowns')
 		.select('*')
 		.eq('id', id)
+		.eq('user_id', userId)
 		.single();
 
 	if (error) throw error;
@@ -54,10 +56,12 @@ export async function updateCountdown(
 	id: string,
 	updates: CountdownUpdate,
 ): Promise<Countdown> {
+	const userId = await requireUserId();
 	const { data, error } = await supabase
 		.from('countdowns')
 		.update(updates)
 		.eq('id', id)
+		.eq('user_id', userId)
 		.select()
 		.single();
 
@@ -66,7 +70,12 @@ export async function updateCountdown(
 }
 
 export async function deleteCountdown(id: string): Promise<void> {
-	const { error } = await supabase.from('countdowns').delete().eq('id', id);
+	const userId = await requireUserId();
+	const { error } = await supabase
+		.from('countdowns')
+		.delete()
+		.eq('id', id)
+		.eq('user_id', userId);
 
 	if (error) throw error;
 }

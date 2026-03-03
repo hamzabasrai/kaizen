@@ -20,10 +20,12 @@ export async function getHabits(): Promise<Habit[]> {
 }
 
 export async function getHabitById(id: string): Promise<Habit | null> {
+	const userId = await requireUserId();
 	const { data, error } = await supabase
 		.from('habits')
 		.select('*')
 		.eq('id', id)
+		.eq('user_id', userId)
 		.single();
 
 	if (error) throw error;
@@ -46,10 +48,12 @@ export async function updateHabit(
 	id: string,
 	updates: HabitUpdate,
 ): Promise<Habit> {
+	const userId = await requireUserId();
 	const { data, error } = await supabase
 		.from('habits')
 		.update(updates)
 		.eq('id', id)
+		.eq('user_id', userId)
 		.select()
 		.single();
 
@@ -58,7 +62,12 @@ export async function updateHabit(
 }
 
 export async function deleteHabit(id: string): Promise<void> {
-	const { error } = await supabase.from('habits').delete().eq('id', id);
+	const userId = await requireUserId();
+	const { error } = await supabase
+		.from('habits')
+		.delete()
+		.eq('id', id)
+		.eq('user_id', userId);
 
 	if (error) throw error;
 }
