@@ -22,8 +22,13 @@ export default function SignupScreen() {
 	const { isDark } = useTheme();
 
 	const handleSignup = async () => {
-		if (!email || !password) {
+		const trimmedEmail = email.trim();
+		if (!trimmedEmail || !password) {
 			setError('Please enter both email and password');
+			return;
+		}
+		if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail)) {
+			setError('Please enter a valid email address');
 			return;
 		}
 
@@ -39,7 +44,7 @@ export default function SignupScreen() {
 
 		try {
 			setError('');
-			await signUp(email, password);
+			await signUp(trimmedEmail, password);
 			setSuccess(true);
 		} catch (err: any) {
 			setError(err.message || 'Failed to create account');

@@ -20,14 +20,19 @@ export default function LoginScreen() {
 	const { isDark } = useTheme();
 
 	const handleLogin = async () => {
-		if (!email || !password) {
+		const trimmedEmail = email.trim();
+		if (!trimmedEmail || !password) {
 			setError('Please enter both email and password');
+			return;
+		}
+		if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail)) {
+			setError('Please enter a valid email address');
 			return;
 		}
 
 		try {
 			setError('');
-			await signIn(email, password);
+			await signIn(trimmedEmail, password);
 		} catch (err: any) {
 			setError(err.message || 'Failed to sign in');
 		}
