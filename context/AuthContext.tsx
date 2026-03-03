@@ -23,12 +23,24 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
-		// Check for existing session
-		supabase.auth.getSession().then(({ data: { session } }) => {
-			setSession(session);
-			setUser(session?.user ?? null);
-			setIsLoading(false);
-		});
+		// Server-verify the current user on startup
+		supabase.auth
+			.getUser()
+			.then(({ data: { user } }) => {
+				setUser(user);
+				// Also fetch session for token access
+				return supabase.auth.getSession();
+			})
+			.then(({ data: { session } }) => {
+				setSession(session);
+			})
+			.catch(() => {
+				setUser(null);
+				setSession(null);
+			})
+			.finally(() => {
+				setIsLoading(false);
+			});
 
 		// Listen for auth changes
 		const {
