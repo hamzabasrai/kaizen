@@ -12,6 +12,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { ErrorBanner } from '~/components/ErrorBanner';
 import { ThemedTextInput } from '~/components/ThemedTextInput';
 import { useAuth } from '~/context/AuthContext';
+import { getErrorMessage, isValidEmail } from '~/lib/validation';
 import { useTheme } from '~/store/useTheme';
 import { authStyles } from '~/styles/auth';
 
@@ -29,7 +30,7 @@ export default function LoginScreen() {
 			setError('Please enter both email and password');
 			return;
 		}
-		if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail)) {
+		if (!isValidEmail(trimmedEmail)) {
 			setError('Please enter a valid email address');
 			return;
 		}
@@ -38,7 +39,7 @@ export default function LoginScreen() {
 			setError('');
 			await signIn(trimmedEmail, password);
 		} catch (err) {
-			setError(err instanceof Error ? err.message : 'Failed to sign in');
+			setError(getErrorMessage(err, 'Failed to sign in'));
 		}
 	};
 
@@ -47,7 +48,7 @@ export default function LoginScreen() {
 			setError('');
 			await signInAnonymously();
 		} catch (err) {
-			setError(err instanceof Error ? err.message : 'Failed to sign in anonymously');
+			setError(getErrorMessage(err, 'Failed to sign in anonymously'));
 		}
 	};
 

@@ -13,6 +13,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { ErrorBanner } from '~/components/ErrorBanner';
 import { ThemedTextInput } from '~/components/ThemedTextInput';
 import { useAuth } from '~/context/AuthContext';
+import { getErrorMessage, isValidEmail } from '~/lib/validation';
 import { useTheme } from '~/store/useTheme';
 import { authStyles } from '~/styles/auth';
 
@@ -33,7 +34,7 @@ export default function SignupScreen() {
 			setError('Please enter both email and password');
 			return;
 		}
-		if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail)) {
+		if (!isValidEmail(trimmedEmail)) {
 			setError('Please enter a valid email address');
 			return;
 		}
@@ -53,7 +54,7 @@ export default function SignupScreen() {
 			await signUp(trimmedEmail, password);
 			setSuccess(true);
 		} catch (err) {
-			setError(err instanceof Error ? err.message : 'Failed to create account');
+			setError(getErrorMessage(err, 'Failed to create account'));
 		}
 	};
 
