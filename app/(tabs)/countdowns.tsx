@@ -95,7 +95,7 @@ export default function CountdownsScreen() {
 				}
 			/>
 			<Link href="/countdown/new" asChild>
-				<TouchableOpacity style={styles.fab}>
+				<TouchableOpacity style={styles.fab} accessibilityLabel="Add new countdown">
 					<Ionicons name="add" size={32} color="#fff" />
 				</TouchableOpacity>
 			</Link>

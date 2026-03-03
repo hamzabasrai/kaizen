@@ -15,6 +15,7 @@ export default function NewHabitScreen() {
 			<TouchableOpacity
 				style={styles.closeButton}
 				onPress={() => router.back()}
+				accessibilityLabel="Close"
 			>
 				<Ionicons name="close" size={28} color={isDark ? '#fff' : '#000'} />
 			</TouchableOpacity>

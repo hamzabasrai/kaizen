@@ -87,7 +87,7 @@ export default function HabitsScreen() {
 				}
 			/>
 			<Link href="/habit/new" asChild>
-				<TouchableOpacity style={styles.fab}>
+				<TouchableOpacity style={styles.fab} accessibilityLabel="Add new habit">
 					<Ionicons name="add" size={32} color="#fff" />
 				</TouchableOpacity>
 			</Link>
