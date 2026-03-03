@@ -1,13 +1,8 @@
-import { Ionicons } from '@expo/vector-icons';
 import { Link } from 'expo-router';
 import { useEffect } from 'react';
-import {
-	FlatList,
-	StyleSheet,
-	Text,
-	TouchableOpacity,
-	View,
-} from 'react-native';
+import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { EmptyState } from '~/components/EmptyState';
+import { FAB } from '~/components/FAB';
 import { useCountdownsStore } from '~/store/useCountdownsStore';
 import { useTheme } from '~/store/useTheme';
 
@@ -84,21 +79,11 @@ export default function CountdownsScreen() {
 				onRefresh={fetchCountdowns}
 				ListEmptyComponent={
 					isLoading ? null : (
-						<View style={styles.emptyState}>
-							<Text
-								style={[styles.emptyText, { color: colors.textSecondary }]}
-							>
-								No countdowns yet. Add your first countdown!
-							</Text>
-						</View>
+						<EmptyState message="No countdowns yet. Add your first countdown!" />
 					)
 				}
 			/>
-			<Link href="/countdown/new" asChild>
-				<TouchableOpacity style={styles.fab} accessibilityLabel="Add new countdown">
-					<Ionicons name="add" size={32} color="#fff" />
-				</TouchableOpacity>
-			</Link>
+			<FAB href="/countdown/new" label="Add new countdown" />
 		</View>
 	);
 }
@@ -137,29 +122,5 @@ const styles = StyleSheet.create({
 	daysRemaining: {
 		fontSize: 16,
 		fontWeight: '600',
-	},
-	emptyState: {
-		alignItems: 'center',
-		justifyContent: 'center',
-		paddingVertical: 60,
-	},
-	emptyText: {
-		fontSize: 16,
-	},
-	fab: {
-		position: 'absolute',
-		right: 20,
-		bottom: 20,
-		width: 56,
-		height: 56,
-		borderRadius: 28,
-		backgroundColor: '#007AFF',
-		alignItems: 'center',
-		justifyContent: 'center',
-		shadowColor: '#000',
-		shadowOffset: { width: 0, height: 2 },
-		shadowOpacity: 0.25,
-		shadowRadius: 4,
-		elevation: 5,
 	},
 });

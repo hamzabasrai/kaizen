@@ -1,13 +1,8 @@
-import { Ionicons } from '@expo/vector-icons';
 import { Link } from 'expo-router';
 import { useCallback, useEffect, useState } from 'react';
-import {
-	FlatList,
-	StyleSheet,
-	Text,
-	TouchableOpacity,
-	View,
-} from 'react-native';
+import { FlatList, StyleSheet, View } from 'react-native';
+import { EmptyState } from '~/components/EmptyState';
+import { FAB } from '~/components/FAB';
 import { HabitCard } from '~/components/habit/HabitCard';
 import * as habitService from '~/services/habits';
 import { useHabitsStore } from '~/store/useHabitsStore';
@@ -76,21 +71,11 @@ export default function HabitsScreen() {
 				onRefresh={fetchHabits}
 				ListEmptyComponent={
 					isLoading ? null : (
-						<View style={styles.emptyState}>
-							<Text
-								style={[styles.emptyText, { color: colors.textSecondary }]}
-							>
-								No habits yet. Add your first habit!
-							</Text>
-						</View>
+						<EmptyState message="No habits yet. Add your first habit!" />
 					)
 				}
 			/>
-			<Link href="/habit/new" asChild>
-				<TouchableOpacity style={styles.fab} accessibilityLabel="Add new habit">
-					<Ionicons name="add" size={32} color="#fff" />
-				</TouchableOpacity>
-			</Link>
+			<FAB href="/habit/new" label="Add new habit" />
 		</View>
 	);
 }
@@ -101,29 +86,5 @@ const styles = StyleSheet.create({
 	},
 	list: {
 		padding: 16,
-	},
-	emptyState: {
-		alignItems: 'center',
-		justifyContent: 'center',
-		paddingVertical: 60,
-	},
-	emptyText: {
-		fontSize: 16,
-	},
-	fab: {
-		position: 'absolute',
-		right: 20,
-		bottom: 20,
-		width: 56,
-		height: 56,
-		borderRadius: 28,
-		backgroundColor: '#007AFF',
-		alignItems: 'center',
-		justifyContent: 'center',
-		shadowColor: '#000',
-		shadowOffset: { width: 0, height: 2 },
-		shadowOpacity: 0.25,
-		shadowRadius: 4,
-		elevation: 5,
 	},
 });
