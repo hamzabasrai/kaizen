@@ -9,6 +9,7 @@ import {
 	TouchableOpacity,
 	View,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAuth } from '~/context/AuthContext';
 import { useTheme } from '~/store/useTheme';
 
@@ -48,7 +49,7 @@ export default function LoginScreen() {
 	};
 
 	return (
-		<View
+		<SafeAreaView
 			style={[styles.container, { backgroundColor: isDark ? '#000' : '#fff' }]}
 		>
 			<View style={styles.header}>
@@ -140,7 +141,7 @@ export default function LoginScreen() {
 					</TouchableOpacity>
 				</Link>
 			</View>
-		</View>
+		</SafeAreaView>
 	);
 }
 

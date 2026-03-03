@@ -1,6 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTheme } from '~/store/useTheme';
 
 export default function NewHabitScreen() {
@@ -8,7 +9,7 @@ export default function NewHabitScreen() {
 	const router = useRouter();
 
 	return (
-		<View
+		<SafeAreaView
 			style={[styles.container, { backgroundColor: isDark ? '#000' : '#fff' }]}
 		>
 			<TouchableOpacity
@@ -23,7 +24,7 @@ export default function NewHabitScreen() {
 			<Text style={[styles.subtitle, { color: isDark ? '#888' : '#666' }]}>
 				Habit creation form coming soon...
 			</Text>
-		</View>
+		</SafeAreaView>
 	);
 }
 

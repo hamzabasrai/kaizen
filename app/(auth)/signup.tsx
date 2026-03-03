@@ -9,6 +9,7 @@ import {
 	TouchableOpacity,
 	View,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAuth } from '~/context/AuthContext';
 import { useTheme } from '~/store/useTheme';
 
@@ -53,7 +54,7 @@ export default function SignupScreen() {
 
 	if (success) {
 		return (
-			<View
+			<SafeAreaView
 				style={[
 					styles.container,
 					{ backgroundColor: isDark ? '#000' : '#fff' },
@@ -78,12 +79,12 @@ export default function SignupScreen() {
 						<Text style={styles.buttonText}>Go to Login</Text>
 					</TouchableOpacity>
 				</View>
-			</View>
+			</SafeAreaView>
 		);
 	}
 
 	return (
-		<View
+		<SafeAreaView
 			style={[styles.container, { backgroundColor: isDark ? '#000' : '#fff' }]}
 		>
 			<View style={styles.header}>
@@ -175,7 +176,7 @@ export default function SignupScreen() {
 					</TouchableOpacity>
 				</Link>
 			</View>
-		</View>
+		</SafeAreaView>
 	);
 }
 

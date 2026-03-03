@@ -1,6 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTheme } from '~/store/useTheme';
 
 export default function HabitDetailScreen() {
@@ -9,7 +10,7 @@ export default function HabitDetailScreen() {
 	const router = useRouter();
 
 	return (
-		<View
+		<SafeAreaView
 			style={[styles.container, { backgroundColor: isDark ? '#000' : '#fff' }]}
 		>
 			<TouchableOpacity
@@ -27,7 +28,7 @@ export default function HabitDetailScreen() {
 			<Text style={[styles.text, { color: isDark ? '#888' : '#666' }]}>
 				Detail view coming soon...
 			</Text>
-		</View>
+		</SafeAreaView>
 	);
 }
 
