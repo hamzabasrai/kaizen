@@ -22,7 +22,6 @@ interface HabitsState {
 	deleteHabit: (id: string) => Promise<void>;
 	toggleCompletion: (
 		habitId: string,
-		userId: string,
 		date: string,
 		completed: boolean,
 	) => Promise<void>;
@@ -80,7 +79,7 @@ export const useHabitsStore = create<HabitsState>()(
 					};
 				}),
 
-			toggleCompletion: async (habitId, userId, date, completed) => {
+			toggleCompletion: async (habitId, date, completed) => {
 				const prevCompletions = { ...get().completions };
 
 				// Optimistic update
@@ -92,7 +91,7 @@ export const useHabitsStore = create<HabitsState>()(
 								{
 									id: `temp-${date}`,
 									habit_id: habitId,
-									user_id: userId,
+									user_id: 'pending',
 									date,
 									completed: true,
 									created_at: new Date().toISOString(),
@@ -110,7 +109,6 @@ export const useHabitsStore = create<HabitsState>()(
 				try {
 					await habitService.toggleHabitCompletion(
 						habitId,
-						userId,
 						date,
 						completed,
 					);

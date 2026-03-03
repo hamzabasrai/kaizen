@@ -135,10 +135,11 @@ export async function getCompletionsForDateRange(
 
 export async function toggleHabitCompletion(
 	habitId: string,
-	userId: string,
 	date: string,
 	completed: boolean,
 ): Promise<HabitCompletion> {
+	const userId = await requireUserId();
+
 	if (completed) {
 		const { data, error } = await supabase
 			.from('habit_completions')
