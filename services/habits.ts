@@ -174,7 +174,7 @@ export async function getHabitWithStats(
 	};
 }
 
-function calculateHabitStats(completions: HabitCompletion[]) {
+export function calculateHabitStats(completions: HabitCompletion[]) {
 	if (completions.length === 0) {
 		return {
 			current_streak: 0,
