@@ -47,15 +47,7 @@ export const ContributionGrid = React.memo(function ContributionGrid({
 
 	const getCellColor = (level: number) => {
 		if (level === 0) return isDark ? '#2d333b' : '#ebedf0';
-
-		const baseColor = color;
-		const opacity = 0.25 + level * 0.25;
-		return (
-			baseColor +
-			Math.round(opacity * 255)
-				.toString(16)
-				.padStart(2, '0')
-		);
+		return color;
 	};
 
 	return (
