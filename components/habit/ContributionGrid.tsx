@@ -8,6 +8,8 @@ interface ContributionGridProps {
 	onPress?: () => void;
 }
 
+const GRID_DAYS = 365;
+
 export const ContributionGrid = React.memo(function ContributionGrid({
 	completions,
 	color = '#39d353',
@@ -19,7 +21,7 @@ export const ContributionGrid = React.memo(function ContributionGrid({
 	const days = React.useMemo(() => {
 		const today = new Date();
 		const daysArray: string[] = [];
-		for (let i = 364; i >= 0; i--) {
+		for (let i = GRID_DAYS - 1; i >= 0; i--) {
 			const date = new Date(today);
 			date.setDate(date.getDate() - i);
 			daysArray.push(date.toISOString().split('T')[0]);

@@ -30,8 +30,8 @@ function ProtectedLayout() {
 		<View style={{ flex: 1 }}>
 			<StatusBar style={isDark ? 'light' : 'dark'} />
 			<Stack screenOptions={{ headerShown: false }}>
-				<Stack.Screen name="(auth)" options={{ headerShown: false }} />
-				<Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+				<Stack.Screen name="(auth)" />
+				<Stack.Screen name="(tabs)" />
 				<Stack.Screen name="habit/new" options={{ presentation: 'modal' }} />
 				<Stack.Screen name="habit/[id]" options={{ presentation: 'modal' }} />
 				<Stack.Screen

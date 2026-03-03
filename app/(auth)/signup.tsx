@@ -13,7 +13,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { ErrorBanner } from '~/components/ErrorBanner';
 import { ThemedTextInput } from '~/components/ThemedTextInput';
 import { useAuth } from '~/context/AuthContext';
-import { getErrorMessage, isValidEmail } from '~/lib/validation';
+import { MIN_PASSWORD_LENGTH, getErrorMessage, isValidEmail } from '~/lib/validation';
 import { useTheme } from '~/store/useTheme';
 import { authStyles } from '~/styles/auth';
 
@@ -44,8 +44,8 @@ export default function SignupScreen() {
 			return;
 		}
 
-		if (password.length < 6) {
-			setError('Password must be at least 6 characters');
+		if (password.length < MIN_PASSWORD_LENGTH) {
+			setError(`Password must be at least ${MIN_PASSWORD_LENGTH} characters`);
 			return;
 		}
 

@@ -7,11 +7,7 @@ import { HabitCard } from '~/components/habit/HabitCard';
 import * as habitService from '~/services/habits';
 import { useHabitsStore } from '~/store/useHabitsStore';
 import { useTheme } from '~/store/useTheme';
-import { Habit, HabitCompletion } from '~/types/habit';
-
-interface HabitWithCompletions extends Habit {
-	completions: HabitCompletion[];
-}
+import { HabitWithCompletions } from '~/types/habit';
 
 export default function HabitsScreen() {
 	const { habits, fetchHabits, loadingCount } = useHabitsStore();

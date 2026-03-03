@@ -11,8 +11,3 @@ export interface UserSettings {
   notifications_enabled: boolean;
   default_reminder_time?: string;
 }
-
-export type DatabaseError = {
-  message: string;
-  code?: string;
-};
