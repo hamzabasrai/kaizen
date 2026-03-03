@@ -1,3 +1,4 @@
+import { AuthChangeEvent, Session } from '@supabase/supabase-js';
 import { Database } from '~/lib/database.types';
 import { supabase } from '~/lib/supabase';
 import { Profile, UserSettings } from '~/types';
@@ -87,7 +88,7 @@ export async function updateUserSettings(
 }
 
 export function onAuthStateChange(
-	callback: (event: string, session: any) => void,
+	callback: (event: AuthChangeEvent, session: Session | null) => void,
 ) {
 	return supabase.auth.onAuthStateChange(callback);
 }
