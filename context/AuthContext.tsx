@@ -1,6 +1,6 @@
 import { Session, User } from '@supabase/supabase-js';
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { supabase } from '~/lib/supabase';
+import * as authService from '~/services/auth';
 import { useCountdownsStore } from '~/store/useCountdownsStore';
 import { useHabitsStore } from '~/store/useHabitsStore';
 
@@ -24,14 +24,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
 	useEffect(() => {
 		// Server-verify the current user on startup
-		supabase.auth
-			.getUser()
-			.then(({ data: { user } }) => {
+		authService
+			.getCurrentUser()
+			.then(user => {
 				setUser(user);
-				// Also fetch session for token access
-				return supabase.auth.getSession();
+				return authService.getSession();
 			})
-			.then(({ data: { session } }) => {
+			.then(session => {
 				setSession(session);
 			})
 			.catch(() => {
@@ -43,41 +42,31 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 			});
 
 		// Listen for auth changes
-		const {
-			data: { subscription },
-		} = supabase.auth.onAuthStateChange((_event, session) => {
-			setSession(session);
-			setUser(session?.user ?? null);
-			setIsLoading(false);
-		});
+		const { data: { subscription } } = authService.onAuthStateChange(
+			(_event, session) => {
+				setSession(session);
+				setUser(session?.user ?? null);
+				setIsLoading(false);
+			},
+		);
 
 		return () => subscription.unsubscribe();
 	}, []);
 
 	const signIn = async (email: string, password: string) => {
-		const { error } = await supabase.auth.signInWithPassword({
-			email,
-			password,
-		});
-		if (error) throw error;
+		await authService.signInWithEmail(email, password);
 	};
 
 	const signUp = async (email: string, password: string) => {
-		const { error } = await supabase.auth.signUp({
-			email,
-			password,
-		});
-		if (error) throw error;
+		await authService.signUpWithEmail(email, password);
 	};
 
 	const signInAnonymously = async () => {
-		const { error } = await supabase.auth.signInAnonymously();
-		if (error) throw error;
+		await authService.signInAnonymously();
 	};
 
 	const signOut = async () => {
-		const { error } = await supabase.auth.signOut();
-		if (error) throw error;
+		await authService.signOut();
 		useHabitsStore.getState().reset();
 		useCountdownsStore.getState().reset();
 	};
