@@ -10,6 +10,7 @@ import {
 	View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { ErrorBanner } from '~/components/ErrorBanner';
 import { ThemedTextInput } from '~/components/ThemedTextInput';
 import { useAuth } from '~/context/AuthContext';
 import { useTheme } from '~/store/useTheme';
@@ -100,12 +101,7 @@ export default function SignupScreen() {
 				</Text>
 			</View>
 
-			{error ? (
-				<View style={authStyles.errorContainer}>
-					<Ionicons name="alert-circle" size={20} color="#FF3B30" />
-					<Text style={authStyles.errorText}>{error}</Text>
-				</View>
-			) : null}
+			<ErrorBanner message={error} />
 
 			<View style={authStyles.form}>
 				<ThemedTextInput
