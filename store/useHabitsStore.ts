@@ -3,6 +3,7 @@ import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 import * as habitService from '~/services/habits';
 import { Habit, HabitCompletion, HabitWithStats } from '~/types/habit';
+import { withAsync } from './helpers';
 
 interface HabitsState {
 	habits: Habit[];
@@ -38,89 +39,46 @@ export const useHabitsStore = create<HabitsState>()(
 			loadingCount: 0,
 			error: null,
 
-			fetchHabits: async () => {
-				set(s => ({ loadingCount: s.loadingCount + 1, error: null }));
-				try {
+			fetchHabits: () =>
+				withAsync(set, 'Failed to fetch habits', async () => {
 					const habits = await habitService.getHabits();
-					set(s => ({ habits, loadingCount: s.loadingCount - 1 }));
-				} catch (err) {
-					set(s => ({
-						error:
-							err instanceof Error ? err.message : 'Failed to fetch habits',
-						loadingCount: s.loadingCount - 1,
-					}));
-				}
-			},
+					return { habits };
+				}),
 
-			fetchHabit: async (id: string) => {
-				set(s => ({ loadingCount: s.loadingCount + 1, error: null }));
-				try {
+			fetchHabit: (id: string) =>
+				withAsync(set, 'Failed to fetch habit', async () => {
 					const habit = await habitService.getHabitWithStats(id);
-					set(s => ({ currentHabit: habit, loadingCount: s.loadingCount - 1 }));
-				} catch (err) {
-					set(s => ({
-						error: err instanceof Error ? err.message : 'Failed to fetch habit',
-						loadingCount: s.loadingCount - 1,
-					}));
-				}
-			},
+					return { currentHabit: habit };
+				}),
 
-			createHabit: async habit => {
-				set(s => ({ loadingCount: s.loadingCount + 1, error: null }));
-				try {
+			createHabit: habit =>
+				withAsync(set, 'Failed to create habit', async () => {
 					const newHabit = await habitService.createHabit(habit);
-					set(s => ({
-						habits: [newHabit, ...s.habits],
-						loadingCount: s.loadingCount - 1,
-					}));
-				} catch (err) {
-					set(s => ({
-						error:
-							err instanceof Error ? err.message : 'Failed to create habit',
-						loadingCount: s.loadingCount - 1,
-					}));
-				}
-			},
+					return { habits: [newHabit, ...get().habits] };
+				}),
 
-			updateHabit: async (id, updates) => {
-				set(s => ({ loadingCount: s.loadingCount + 1, error: null }));
-				try {
+			updateHabit: (id, updates) =>
+				withAsync(set, 'Failed to update habit', async () => {
 					const updatedHabit = await habitService.updateHabit(id, updates);
-					set(s => ({
-						habits: s.habits.map(h => (h.id === id ? updatedHabit : h)),
+					const { habits, currentHabit } = get();
+					return {
+						habits: habits.map(h => (h.id === id ? updatedHabit : h)),
 						currentHabit:
-							s.currentHabit?.id === id
-								? { ...s.currentHabit, ...updatedHabit }
-								: s.currentHabit,
-						loadingCount: s.loadingCount - 1,
-					}));
-				} catch (err) {
-					set(s => ({
-						error:
-							err instanceof Error ? err.message : 'Failed to update habit',
-						loadingCount: s.loadingCount - 1,
-					}));
-				}
-			},
+							currentHabit?.id === id
+								? { ...currentHabit, ...updatedHabit }
+								: currentHabit,
+					};
+				}),
 
-			deleteHabit: async id => {
-				set(s => ({ loadingCount: s.loadingCount + 1, error: null }));
-				try {
+			deleteHabit: id =>
+				withAsync(set, 'Failed to delete habit', async () => {
 					await habitService.deleteHabit(id);
-					set(s => ({
-						habits: s.habits.filter(h => h.id !== id),
-						currentHabit:
-							s.currentHabit?.id === id ? null : s.currentHabit,
-						loadingCount: s.loadingCount - 1,
-					}));
-				} catch (err) {
-					set(s => ({
-						error:
-							err instanceof Error ? err.message : 'Failed to delete habit',
-						loadingCount: s.loadingCount - 1,
-					}));
-				}
-			},
+					const { habits, currentHabit } = get();
+					return {
+						habits: habits.filter(h => h.id !== id),
+						currentHabit: currentHabit?.id === id ? null : currentHabit,
+					};
+				}),
 
 			toggleCompletion: async (habitId, userId, date, completed) => {
 				const prevCompletions = { ...get().completions };
