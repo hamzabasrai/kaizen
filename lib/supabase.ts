@@ -23,10 +23,19 @@ export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
 
 export type SupabaseClient = typeof supabase;
 
-export async function requireUserId(): Promise<string> {
-	const {
-		data: { user },
-	} = await supabase.auth.getUser();
-	if (!user) throw new Error('Not authenticated');
-	return user.id;
+let cachedUserIdPromise: Promise<string> | null = null;
+
+export function requireUserId(): Promise<string> {
+	if (!cachedUserIdPromise) {
+		cachedUserIdPromise = supabase.auth
+			.getUser()
+			.then(({ data: { user } }) => {
+				if (!user) throw new Error('Not authenticated');
+				return user.id;
+			})
+			.finally(() => {
+				cachedUserIdPromise = null;
+			});
+	}
+	return cachedUserIdPromise;
 }
