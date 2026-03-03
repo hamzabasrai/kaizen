@@ -75,10 +75,12 @@ export async function deleteHabit(id: string): Promise<void> {
 export async function getHabitCompletions(
 	habitId: string,
 ): Promise<HabitCompletion[]> {
+	const userId = await requireUserId();
 	const { data, error } = await supabase
 		.from('habit_completions')
 		.select('*')
 		.eq('habit_id', habitId)
+		.eq('user_id', userId)
 		.order('date', { ascending: false });
 
 	if (error) throw error;
@@ -90,10 +92,12 @@ export async function getAllCompletions(
 ): Promise<Record<string, HabitCompletion[]>> {
 	if (habitIds.length === 0) return {};
 
+	const userId = await requireUserId();
 	const { data, error } = await supabase
 		.from('habit_completions')
 		.select('*')
 		.in('habit_id', habitIds)
+		.eq('user_id', userId)
 		.order('date', { ascending: false });
 
 	if (error) throw error;
@@ -115,10 +119,12 @@ export async function getCompletionsForDateRange(
 	startDate: string,
 	endDate: string,
 ): Promise<HabitCompletion[]> {
+	const userId = await requireUserId();
 	const { data, error } = await supabase
 		.from('habit_completions')
 		.select('*')
 		.eq('habit_id', habitId)
+		.eq('user_id', userId)
 		.gte('date', startDate)
 		.lte('date', endDate)
 		.order('date', { ascending: true });
