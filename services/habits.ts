@@ -73,6 +73,31 @@ export async function getHabitCompletions(
 	return (data || []) as HabitCompletion[];
 }
 
+export async function getAllCompletions(
+	habitIds: string[],
+): Promise<Record<string, HabitCompletion[]>> {
+	if (habitIds.length === 0) return {};
+
+	const { data, error } = await supabase
+		.from('habit_completions')
+		.select('*')
+		.in('habit_id', habitIds)
+		.order('date', { ascending: false });
+
+	if (error) throw error;
+
+	const grouped: Record<string, HabitCompletion[]> = {};
+	for (const id of habitIds) {
+		grouped[id] = [];
+	}
+	for (const completion of (data || []) as HabitCompletion[]) {
+		if (completion.habit_id) {
+			(grouped[completion.habit_id] ??= []).push(completion);
+		}
+	}
+	return grouped;
+}
+
 export async function getCompletionsForDateRange(
 	habitId: string,
 	startDate: string,

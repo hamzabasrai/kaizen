@@ -26,13 +26,19 @@ export default function HabitsScreen() {
 	>([]);
 
 	const loadCompletions = useCallback(async () => {
-		const habitsData = await Promise.all(
-			habits.map(async habit => {
-				const completions = await habitService.getHabitCompletions(habit.id);
-				return { ...habit, completions };
-			}),
+		if (habits.length === 0) {
+			setHabitsWithCompletions([]);
+			return;
+		}
+		const completionsMap = await habitService.getAllCompletions(
+			habits.map(h => h.id),
 		);
-		setHabitsWithCompletions(habitsData);
+		setHabitsWithCompletions(
+			habits.map(habit => ({
+				...habit,
+				completions: completionsMap[habit.id] || [],
+			})),
+		);
 	}, [habits]);
 
 	useEffect(() => {
@@ -40,9 +46,7 @@ export default function HabitsScreen() {
 	}, []);
 
 	useEffect(() => {
-		if (habits.length > 0) {
-			loadCompletions();
-		}
+		loadCompletions();
 	}, [habits, loadCompletions]);
 
 	const renderHabit = ({ item }: { item: HabitWithCompletions }) => (
@@ -61,10 +65,7 @@ export default function HabitsScreen() {
 				keyExtractor={item => item.id}
 				contentContainerStyle={styles.list}
 				refreshing={isLoading}
-				onRefresh={() => {
-					fetchHabits();
-					loadCompletions();
-				}}
+				onRefresh={fetchHabits}
 				ListEmptyComponent={
 					<View style={styles.emptyState}>
 						<Text
