@@ -2,8 +2,8 @@ import { Stack, useRouter, useSegments } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
 import { View } from 'react-native';
-import { AuthProvider, useAuth } from '../context/AuthContext';
-import { useTheme } from '../store/useTheme';
+import { AuthProvider, useAuth } from '~/context/AuthContext';
+import { useTheme } from '~/store/useTheme';
 
 function ProtectedLayout() {
 	const { isAuthenticated, isLoading } = useAuth();
