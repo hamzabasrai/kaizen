@@ -30,15 +30,22 @@ export default function HabitsScreen() {
 			setHabitsWithCompletions([]);
 			return;
 		}
-		const completionsMap = await habitService.getAllCompletions(
-			habits.map(h => h.id),
-		);
-		setHabitsWithCompletions(
-			habits.map(habit => ({
-				...habit,
-				completions: completionsMap[habit.id] || [],
-			})),
-		);
+		try {
+			const completionsMap = await habitService.getAllCompletions(
+				habits.map(h => h.id),
+			);
+			setHabitsWithCompletions(
+				habits.map(habit => ({
+					...habit,
+					completions: completionsMap[habit.id] || [],
+				})),
+			);
+		} catch {
+			// Completions fetch failed — keep showing habits without completions
+			setHabitsWithCompletions(
+				habits.map(habit => ({ ...habit, completions: [] })),
+			);
+		}
 	}, [habits]);
 
 	useEffect(() => {
