@@ -10,6 +10,7 @@ import {
 	View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { ThemedTextInput } from '~/components/ThemedTextInput';
 import { useAuth } from '~/context/AuthContext';
 import { useTheme } from '~/store/useTheme';
 import { authStyles } from '~/styles/auth';
@@ -71,16 +72,8 @@ export default function LoginScreen() {
 			) : null}
 
 			<View style={authStyles.form}>
-				<TextInput
-					style={[
-						authStyles.input,
-						{
-							backgroundColor: colors.surface,
-							color: colors.text,
-						},
-					]}
+				<ThemedTextInput
 					placeholder="Email"
-					placeholderTextColor={colors.placeholder}
 					value={email}
 					onChangeText={setEmail}
 					autoCapitalize="none"
@@ -90,17 +83,9 @@ export default function LoginScreen() {
 					onSubmitEditing={() => passwordRef.current?.focus()}
 				/>
 
-				<TextInput
+				<ThemedTextInput
 					ref={passwordRef}
-					style={[
-						authStyles.input,
-						{
-							backgroundColor: colors.surface,
-							color: colors.text,
-						},
-					]}
 					placeholder="Password"
-					placeholderTextColor={colors.placeholder}
 					value={password}
 					onChangeText={setPassword}
 					secureTextEntry
