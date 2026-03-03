@@ -1,13 +1,22 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useTheme } from '~/store/useTheme';
 
 export default function NewCountdownScreen() {
 	const { isDark } = useTheme();
+	const router = useRouter();
 
 	return (
 		<View
 			style={[styles.container, { backgroundColor: isDark ? '#000' : '#fff' }]}
 		>
+			<TouchableOpacity
+				style={styles.closeButton}
+				onPress={() => router.back()}
+			>
+				<Ionicons name="close" size={28} color={isDark ? '#fff' : '#000'} />
+			</TouchableOpacity>
 			<Text style={[styles.title, { color: isDark ? '#fff' : '#000' }]}>
 				New Countdown
 			</Text>
@@ -24,6 +33,12 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		alignItems: 'center',
 		padding: 20,
+	},
+	closeButton: {
+		position: 'absolute',
+		top: 16,
+		right: 16,
+		padding: 8,
 	},
 	title: {
 		fontSize: 24,
