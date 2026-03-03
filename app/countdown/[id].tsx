@@ -6,27 +6,27 @@ import { useTheme } from '~/store/useTheme';
 
 export default function CountdownDetailScreen() {
 	const { id } = useLocalSearchParams<{ id: string }>();
-	const { isDark } = useTheme();
+	const { colors } = useTheme();
 	const router = useRouter();
 
 	return (
 		<SafeAreaView
-			style={[styles.container, { backgroundColor: isDark ? '#000' : '#fff' }]}
+			style={[styles.container, { backgroundColor: colors.background }]}
 		>
 			<TouchableOpacity
 				style={styles.closeButton}
 				onPress={() => router.back()}
 				accessibilityLabel="Close"
 			>
-				<Ionicons name="close" size={28} color={isDark ? '#fff' : '#000'} />
+				<Ionicons name="close" size={28} color={colors.text} />
 			</TouchableOpacity>
-			<Text style={[styles.title, { color: isDark ? '#fff' : '#000' }]}>
+			<Text style={[styles.title, { color: colors.text }]}>
 				Countdown Detail
 			</Text>
-			<Text style={[styles.subtitle, { color: isDark ? '#888' : '#666' }]}>
+			<Text style={[styles.subtitle, { color: colors.textSecondary }]}>
 				Countdown ID: {id}
 			</Text>
-			<Text style={[styles.text, { color: isDark ? '#888' : '#666' }]}>
+			<Text style={[styles.text, { color: colors.textSecondary }]}>
 				Detail view coming soon...
 			</Text>
 		</SafeAreaView>

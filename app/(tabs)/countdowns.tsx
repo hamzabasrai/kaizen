@@ -14,11 +14,11 @@ import { useTheme } from '~/store/useTheme';
 export default function CountdownsScreen() {
 	const { countdowns, fetchCountdowns, loadingCount } = useCountdownsStore();
 	const isLoading = loadingCount > 0;
-	const { isDark } = useTheme();
+	const { colors } = useTheme();
 
 	useEffect(() => {
 		fetchCountdowns();
-	}, []);
+	}, [fetchCountdowns]);
 
 	const renderCountdown = ({ item }: { item: (typeof countdowns)[0] }) => {
 		let daysText = '';
@@ -39,7 +39,7 @@ export default function CountdownsScreen() {
 				<TouchableOpacity
 					style={[
 						styles.countdownCard,
-						{ backgroundColor: isDark ? '#2c2c2e' : '#f2f2f7' },
+						{ backgroundColor: colors.surface },
 					]}
 				>
 					<View style={styles.countdownContent}>
@@ -48,7 +48,7 @@ export default function CountdownsScreen() {
 							<Text
 								style={[
 									styles.countdownTitle,
-									{ color: isDark ? '#fff' : '#000' },
+									{ color: colors.text },
 								]}
 							>
 								{item.title}
@@ -56,7 +56,7 @@ export default function CountdownsScreen() {
 							<Text
 								style={[
 									styles.countdownDate,
-									{ color: isDark ? '#888' : '#666' },
+									{ color: colors.textSecondary },
 								]}
 							>
 								{item.target_date}
@@ -73,7 +73,7 @@ export default function CountdownsScreen() {
 
 	return (
 		<View
-			style={[styles.container, { backgroundColor: isDark ? '#000' : '#fff' }]}
+			style={[styles.container, { backgroundColor: colors.background }]}
 		>
 			<FlatList
 				data={countdowns}
@@ -86,7 +86,7 @@ export default function CountdownsScreen() {
 					isLoading ? null : (
 						<View style={styles.emptyState}>
 							<Text
-								style={[styles.emptyText, { color: isDark ? '#888' : '#666' }]}
+								style={[styles.emptyText, { color: colors.textSecondary }]}
 							>
 								No countdowns yet. Add your first countdown!
 							</Text>

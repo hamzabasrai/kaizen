@@ -23,7 +23,7 @@ export default function SignupScreen() {
 	const passwordRef = useRef<TextInput>(null);
 	const confirmPasswordRef = useRef<TextInput>(null);
 	const { signUp, isLoading } = useAuth();
-	const { isDark } = useTheme();
+	const { colors } = useTheme();
 
 	const handleSignup = async () => {
 		const trimmedEmail = email.trim();
@@ -60,18 +60,18 @@ export default function SignupScreen() {
 			<SafeAreaView
 				style={[
 					authStyles.container,
-					{ backgroundColor: isDark ? '#000' : '#fff' },
+					{ backgroundColor: colors.background },
 				]}
 			>
 				<View style={styles.successContainer}>
 					<Ionicons name="checkmark-circle" size={64} color="#34C759" />
 					<Text
-						style={[styles.successTitle, { color: isDark ? '#fff' : '#000' }]}
+						style={[styles.successTitle, { color: colors.text }]}
 					>
 						Account Created!
 					</Text>
 					<Text
-						style={[styles.successText, { color: isDark ? '#888' : '#666' }]}
+						style={[styles.successText, { color: colors.textSecondary }]}
 					>
 						Please check your email to confirm your account before signing in.
 					</Text>
@@ -88,13 +88,13 @@ export default function SignupScreen() {
 
 	return (
 		<SafeAreaView
-			style={[authStyles.container, { backgroundColor: isDark ? '#000' : '#fff' }]}
+			style={[authStyles.container, { backgroundColor: colors.background }]}
 		>
 			<View style={authStyles.header}>
-				<Text style={[authStyles.title, { color: isDark ? '#fff' : '#000' }]}>
+				<Text style={[authStyles.title, { color: colors.text }]}>
 					Create Account
 				</Text>
-				<Text style={[authStyles.subtitle, { color: isDark ? '#888' : '#666' }]}>
+				<Text style={[authStyles.subtitle, { color: colors.textSecondary }]}>
 					Start tracking your habits today
 				</Text>
 			</View>
@@ -111,12 +111,12 @@ export default function SignupScreen() {
 					style={[
 						authStyles.input,
 						{
-							backgroundColor: isDark ? '#2c2c2e' : '#f2f2f7',
-							color: isDark ? '#fff' : '#000',
+							backgroundColor: colors.surface,
+							color: colors.text,
 						},
 					]}
 					placeholder="Email"
-					placeholderTextColor={isDark ? '#888' : '#999'}
+					placeholderTextColor={colors.placeholder}
 					value={email}
 					onChangeText={setEmail}
 					autoCapitalize="none"
@@ -131,12 +131,12 @@ export default function SignupScreen() {
 					style={[
 						authStyles.input,
 						{
-							backgroundColor: isDark ? '#2c2c2e' : '#f2f2f7',
-							color: isDark ? '#fff' : '#000',
+							backgroundColor: colors.surface,
+							color: colors.text,
 						},
 					]}
 					placeholder="Password"
-					placeholderTextColor={isDark ? '#888' : '#999'}
+					placeholderTextColor={colors.placeholder}
 					value={password}
 					onChangeText={setPassword}
 					secureTextEntry
@@ -150,12 +150,12 @@ export default function SignupScreen() {
 					style={[
 						authStyles.input,
 						{
-							backgroundColor: isDark ? '#2c2c2e' : '#f2f2f7',
-							color: isDark ? '#fff' : '#000',
+							backgroundColor: colors.surface,
+							color: colors.text,
 						},
 					]}
 					placeholder="Confirm Password"
-					placeholderTextColor={isDark ? '#888' : '#999'}
+					placeholderTextColor={colors.placeholder}
 					value={confirmPassword}
 					onChangeText={setConfirmPassword}
 					secureTextEntry
@@ -178,7 +178,7 @@ export default function SignupScreen() {
 			</View>
 
 			<View style={authStyles.footer}>
-				<Text style={{ color: isDark ? '#888' : '#666' }}>
+				<Text style={{ color: colors.textSecondary }}>
 					Already have an account?{' '}
 				</Text>
 				<Link href="/(auth)/login" asChild>

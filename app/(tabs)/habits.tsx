@@ -21,7 +21,7 @@ interface HabitWithCompletions extends Habit {
 export default function HabitsScreen() {
 	const { habits, fetchHabits, loadingCount } = useHabitsStore();
 	const isLoading = loadingCount > 0;
-	const { isDark } = useTheme();
+	const { colors } = useTheme();
 	const [habitsWithCompletions, setHabitsWithCompletions] = useState<
 		HabitWithCompletions[]
 	>([]);
@@ -51,7 +51,7 @@ export default function HabitsScreen() {
 
 	useEffect(() => {
 		fetchHabits();
-	}, []);
+	}, [fetchHabits]);
 
 	useEffect(() => {
 		loadCompletions();
@@ -65,7 +65,7 @@ export default function HabitsScreen() {
 
 	return (
 		<View
-			style={[styles.container, { backgroundColor: isDark ? '#000' : '#fff' }]}
+			style={[styles.container, { backgroundColor: colors.background }]}
 		>
 			<FlatList
 				data={habitsWithCompletions}
@@ -78,7 +78,7 @@ export default function HabitsScreen() {
 					isLoading ? null : (
 						<View style={styles.emptyState}>
 							<Text
-								style={[styles.emptyText, { color: isDark ? '#888' : '#666' }]}
+								style={[styles.emptyText, { color: colors.textSecondary }]}
 							>
 								No habits yet. Add your first habit!
 							</Text>

@@ -14,16 +14,16 @@ export const StreakDisplay = React.memo(function StreakDisplay({
 	longestStreak,
 	completionRate,
 }: StreakDisplayProps) {
-	const { isDark } = useTheme();
+	const { colors } = useTheme();
 
 	return (
 		<View style={styles.container}>
 			<View style={styles.stat}>
 				<Ionicons name="flame" size={16} color="#FF9500" />
-				<Text style={[styles.value, { color: isDark ? '#fff' : '#000' }]}>
+				<Text style={[styles.value, { color: colors.text }]}>
 					{currentStreak}
 				</Text>
-				<Text style={[styles.label, { color: isDark ? '#888' : '#666' }]}>
+				<Text style={[styles.label, { color: colors.textSecondary }]}>
 					Current
 				</Text>
 			</View>
@@ -32,10 +32,10 @@ export const StreakDisplay = React.memo(function StreakDisplay({
 
 			<View style={styles.stat}>
 				<Ionicons name="trophy" size={16} color="#FFD60A" />
-				<Text style={[styles.value, { color: isDark ? '#fff' : '#000' }]}>
+				<Text style={[styles.value, { color: colors.text }]}>
 					{longestStreak}
 				</Text>
-				<Text style={[styles.label, { color: isDark ? '#888' : '#666' }]}>
+				<Text style={[styles.label, { color: colors.textSecondary }]}>
 					Best
 				</Text>
 			</View>
@@ -44,10 +44,10 @@ export const StreakDisplay = React.memo(function StreakDisplay({
 
 			<View style={styles.stat}>
 				<Ionicons name="checkmark-circle" size={16} color="#34C759" />
-				<Text style={[styles.value, { color: isDark ? '#fff' : '#000' }]}>
+				<Text style={[styles.value, { color: colors.text }]}>
 					{completionRate}%
 				</Text>
-				<Text style={[styles.label, { color: isDark ? '#888' : '#666' }]}>
+				<Text style={[styles.label, { color: colors.textSecondary }]}>
 					Rate
 				</Text>
 			</View>

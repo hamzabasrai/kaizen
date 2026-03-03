@@ -20,7 +20,7 @@ export default function LoginScreen() {
 	const [error, setError] = useState('');
 	const passwordRef = useRef<TextInput>(null);
 	const { signIn, signInAnonymously, isLoading } = useAuth();
-	const { isDark } = useTheme();
+	const { colors } = useTheme();
 
 	const handleLogin = async () => {
 		const trimmedEmail = email.trim();
@@ -52,13 +52,13 @@ export default function LoginScreen() {
 
 	return (
 		<SafeAreaView
-			style={[authStyles.container, { backgroundColor: isDark ? '#000' : '#fff' }]}
+			style={[authStyles.container, { backgroundColor: colors.background }]}
 		>
 			<View style={authStyles.header}>
-				<Text style={[authStyles.title, { color: isDark ? '#fff' : '#000' }]}>
+				<Text style={[authStyles.title, { color: colors.text }]}>
 					Welcome to Kaizen
 				</Text>
-				<Text style={[authStyles.subtitle, { color: isDark ? '#888' : '#666' }]}>
+				<Text style={[authStyles.subtitle, { color: colors.textSecondary }]}>
 					Track your habits and countdowns
 				</Text>
 			</View>
@@ -75,12 +75,12 @@ export default function LoginScreen() {
 					style={[
 						authStyles.input,
 						{
-							backgroundColor: isDark ? '#2c2c2e' : '#f2f2f7',
-							color: isDark ? '#fff' : '#000',
+							backgroundColor: colors.surface,
+							color: colors.text,
 						},
 					]}
 					placeholder="Email"
-					placeholderTextColor={isDark ? '#888' : '#999'}
+					placeholderTextColor={colors.placeholder}
 					value={email}
 					onChangeText={setEmail}
 					autoCapitalize="none"
@@ -95,12 +95,12 @@ export default function LoginScreen() {
 					style={[
 						authStyles.input,
 						{
-							backgroundColor: isDark ? '#2c2c2e' : '#f2f2f7',
-							color: isDark ? '#fff' : '#000',
+							backgroundColor: colors.surface,
+							color: colors.text,
 						},
 					]}
 					placeholder="Password"
-					placeholderTextColor={isDark ? '#888' : '#999'}
+					placeholderTextColor={colors.placeholder}
 					value={password}
 					onChangeText={setPassword}
 					secureTextEntry
@@ -125,13 +125,13 @@ export default function LoginScreen() {
 					style={[
 						authStyles.button,
 						styles.anonymousButton,
-						{ backgroundColor: isDark ? '#2c2c2e' : '#e5e5e5' },
+						{ backgroundColor: colors.surface },
 					]}
 					onPress={handleAnonymousLogin}
 					disabled={isLoading}
 				>
 					<Text
-						style={[authStyles.buttonText, { color: isDark ? '#fff' : '#000' }]}
+						style={[authStyles.buttonText, { color: colors.text }]}
 					>
 						Continue Anonymously
 					</Text>
@@ -139,7 +139,7 @@ export default function LoginScreen() {
 			</View>
 
 			<View style={authStyles.footer}>
-				<Text style={{ color: isDark ? '#888' : '#666' }}>
+				<Text style={{ color: colors.textSecondary }}>
 					Don&apos;t have an account?{' '}
 				</Text>
 				<Link href="/(auth)/signup" asChild>

@@ -13,7 +13,7 @@ interface HabitCardProps {
 }
 
 export const HabitCard = React.memo(function HabitCard({ habit, completions, onPress }: HabitCardProps) {
-	const { isDark } = useTheme();
+	const { colors } = useTheme();
 
 	const stats = React.useMemo(() => {
 		const s = calculateHabitStats(completions);
@@ -26,17 +26,17 @@ export const HabitCard = React.memo(function HabitCard({ habit, completions, onP
 
 	return (
 		<TouchableOpacity
-			style={[styles.card, { backgroundColor: isDark ? '#2c2c2e' : '#f2f2f7' }]}
+			style={[styles.card, { backgroundColor: colors.surface }]}
 			onPress={onPress}
 			activeOpacity={0.8}
 		>
 			<View style={styles.header}>
 				<Text style={styles.icon}>{habit.icon || '✓'}</Text>
 				<View style={styles.titleContainer}>
-					<Text style={[styles.name, { color: isDark ? '#fff' : '#000' }]}>
+					<Text style={[styles.name, { color: colors.text }]}>
 						{habit.name}
 					</Text>
-					<Text style={[styles.frequency, { color: isDark ? '#888' : '#666' }]}>
+					<Text style={[styles.frequency, { color: colors.textSecondary }]}>
 						{habit.frequency_goal}x per {habit.frequency_period}
 					</Text>
 				</View>

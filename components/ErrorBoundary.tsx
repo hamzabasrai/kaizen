@@ -29,19 +29,19 @@ export class ErrorBoundary extends React.Component<Props, State> {
 	render() {
 		if (this.state.hasError) {
 			const isDark = Appearance.getColorScheme() === 'dark';
+			const bg = isDark ? '#000' : '#fff';
+			const text = isDark ? '#fff' : '#000';
+			const textSecondary = isDark ? '#888' : '#666';
 
 			return (
 				<View
-					style={[
-						styles.container,
-						{ backgroundColor: isDark ? '#000' : '#fff' },
-					]}
+					style={[styles.container, { backgroundColor: bg }]}
 				>
-					<Text style={[styles.title, { color: isDark ? '#fff' : '#000' }]}>
+					<Text style={[styles.title, { color: text }]}>
 						Something went wrong
 					</Text>
 					<Text
-						style={[styles.subtitle, { color: isDark ? '#888' : '#666' }]}
+						style={[styles.subtitle, { color: textSecondary }]}
 					>
 						The app encountered an unexpected error.
 					</Text>
