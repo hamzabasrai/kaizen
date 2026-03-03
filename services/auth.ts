@@ -50,7 +50,7 @@ export async function getProfile(userId: string): Promise<Profile | null> {
 		.from('profiles')
 		.select('*')
 		.eq('id', userId)
-		.single();
+		.maybeSingle();
 
 	if (error) throw error;
 	return data as Profile | null;
