@@ -75,13 +75,15 @@ export default function HabitsScreen() {
 				refreshing={isLoading}
 				onRefresh={fetchHabits}
 				ListEmptyComponent={
-					<View style={styles.emptyState}>
-						<Text
-							style={[styles.emptyText, { color: isDark ? '#888' : '#666' }]}
-						>
-							No habits yet. Add your first habit!
-						</Text>
-					</View>
+					isLoading ? null : (
+						<View style={styles.emptyState}>
+							<Text
+								style={[styles.emptyText, { color: isDark ? '#888' : '#666' }]}
+							>
+								No habits yet. Add your first habit!
+							</Text>
+						</View>
+					)
 				}
 			/>
 			<Link href="/habit/new" asChild>

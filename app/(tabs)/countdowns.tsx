@@ -83,13 +83,15 @@ export default function CountdownsScreen() {
 				refreshing={isLoading}
 				onRefresh={fetchCountdowns}
 				ListEmptyComponent={
-					<View style={styles.emptyState}>
-						<Text
-							style={[styles.emptyText, { color: isDark ? '#888' : '#666' }]}
-						>
-							No countdowns yet. Add your first countdown!
-						</Text>
-					</View>
+					isLoading ? null : (
+						<View style={styles.emptyState}>
+							<Text
+								style={[styles.emptyText, { color: isDark ? '#888' : '#666' }]}
+							>
+								No countdowns yet. Add your first countdown!
+							</Text>
+						</View>
+					)
 				}
 			/>
 			<Link href="/countdown/new" asChild>
