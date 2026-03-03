@@ -1,4 +1,4 @@
-import { supabase } from '~/lib/supabase';
+import { requireUserId, supabase } from '~/lib/supabase';
 import {
 	Habit,
 	HabitCompletion,
@@ -8,9 +8,11 @@ import {
 } from '~/types/habit';
 
 export async function getHabits(): Promise<Habit[]> {
+	const userId = await requireUserId();
 	const { data, error } = await supabase
 		.from('habits')
 		.select('*')
+		.eq('user_id', userId)
 		.order('created_at', { ascending: false });
 
 	if (error) throw error;
@@ -29,9 +31,10 @@ export async function getHabitById(id: string): Promise<Habit | null> {
 }
 
 export async function createHabit(habit: HabitInsert): Promise<Habit> {
+	const userId = await requireUserId();
 	const { data, error } = await supabase
 		.from('habits')
-		.insert(habit)
+		.insert({ ...habit, user_id: userId })
 		.select()
 		.single();
 

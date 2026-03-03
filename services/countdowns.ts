@@ -5,7 +5,7 @@ import {
 	parseISO,
 	startOfDay,
 } from 'date-fns';
-import { supabase } from '~/lib/supabase';
+import { requireUserId, supabase } from '~/lib/supabase';
 import {
 	Countdown,
 	CountdownInsert,
@@ -14,9 +14,11 @@ import {
 } from '~/types/countdown';
 
 export async function getCountdowns(): Promise<Countdown[]> {
+	const userId = await requireUserId();
 	const { data, error } = await supabase
 		.from('countdowns')
 		.select('*')
+		.eq('user_id', userId)
 		.order('target_date', { ascending: true });
 
 	if (error) throw error;
@@ -37,9 +39,10 @@ export async function getCountdownById(id: string): Promise<Countdown | null> {
 export async function createCountdown(
 	countdown: CountdownInsert,
 ): Promise<Countdown> {
+	const userId = await requireUserId();
 	const { data, error } = await supabase
 		.from('countdowns')
-		.insert(countdown)
+		.insert({ ...countdown, user_id: userId })
 		.select()
 		.single();
 

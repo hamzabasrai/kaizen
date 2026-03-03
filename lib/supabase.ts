@@ -22,3 +22,11 @@ export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
 });
 
 export type SupabaseClient = typeof supabase;
+
+export async function requireUserId(): Promise<string> {
+	const {
+		data: { user },
+	} = await supabase.auth.getUser();
+	if (!user) throw new Error('Not authenticated');
+	return user.id;
+}
