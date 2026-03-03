@@ -2,6 +2,7 @@ import { Stack, useRouter, useSegments } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
 import { View } from 'react-native';
+import { ErrorBoundary } from '~/components/ErrorBoundary';
 import { AuthProvider, useAuth } from '~/context/AuthContext';
 import { useTheme } from '~/store/useTheme';
 
@@ -48,8 +49,10 @@ function ProtectedLayout() {
 
 export default function RootLayout() {
 	return (
-		<AuthProvider>
-			<ProtectedLayout />
-		</AuthProvider>
+		<ErrorBoundary>
+			<AuthProvider>
+				<ProtectedLayout />
+			</AuthProvider>
+		</ErrorBoundary>
 	);
 }
