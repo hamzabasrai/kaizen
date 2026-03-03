@@ -1,5 +1,11 @@
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import {
+	Appearance,
+	StyleSheet,
+	Text,
+	TouchableOpacity,
+	View,
+} from 'react-native';
 
 interface Props {
 	children: React.ReactNode;
@@ -22,10 +28,21 @@ export class ErrorBoundary extends React.Component<Props, State> {
 
 	render() {
 		if (this.state.hasError) {
+			const isDark = Appearance.getColorScheme() === 'dark';
+
 			return (
-				<View style={styles.container}>
-					<Text style={styles.title}>Something went wrong</Text>
-					<Text style={styles.subtitle}>
+				<View
+					style={[
+						styles.container,
+						{ backgroundColor: isDark ? '#000' : '#fff' },
+					]}
+				>
+					<Text style={[styles.title, { color: isDark ? '#fff' : '#000' }]}>
+						Something went wrong
+					</Text>
+					<Text
+						style={[styles.subtitle, { color: isDark ? '#888' : '#666' }]}
+					>
 						The app encountered an unexpected error.
 					</Text>
 					<TouchableOpacity style={styles.button} onPress={this.handleReset}>
@@ -45,17 +62,14 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'center',
 		padding: 24,
-		backgroundColor: '#000',
 	},
 	title: {
 		fontSize: 20,
 		fontWeight: '600',
-		color: '#fff',
 		marginBottom: 8,
 	},
 	subtitle: {
 		fontSize: 16,
-		color: '#888',
 		textAlign: 'center',
 		marginBottom: 24,
 	},
