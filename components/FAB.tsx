@@ -1,5 +1,5 @@
 import { Ionicons } from '@expo/vector-icons';
-import { Href, Link } from 'expo-router';
+import { Href, useRouter } from 'expo-router';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import { useTheme } from '~/store/useTheme';
 
@@ -10,16 +10,16 @@ interface FABProps {
 
 export function FAB({ href, label }: FABProps) {
 	const { colors } = useTheme();
+	const router = useRouter();
 
 	return (
-		<Link href={href} asChild>
-			<TouchableOpacity
-				style={[styles.fab, { backgroundColor: colors.primary }]}
-				accessibilityLabel={label}
-			>
-				<Ionicons name="add" size={32} color="#fff" />
-			</TouchableOpacity>
-		</Link>
+		<TouchableOpacity
+			style={[styles.fab, { backgroundColor: colors.primary }]}
+			onPress={() => router.push(href)}
+			accessibilityLabel={label}
+		>
+			<Ionicons name="add" size={32} color="#fff" />
+		</TouchableOpacity>
 	);
 }
 

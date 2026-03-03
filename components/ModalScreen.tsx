@@ -7,16 +7,21 @@ import { useTheme } from '~/store/useTheme';
 interface ModalScreenProps {
 	title: string;
 	subtitle?: string;
+	align?: 'center' | 'top';
 	children?: React.ReactNode;
 }
 
-export function ModalScreen({ title, subtitle, children }: ModalScreenProps) {
+export function ModalScreen({ title, subtitle, align = 'center', children }: ModalScreenProps) {
 	const { colors } = useTheme();
 	const router = useRouter();
 
 	return (
 		<SafeAreaView
-			style={[styles.container, { backgroundColor: colors.background }]}
+			style={[
+				styles.container,
+				align === 'center' && styles.centered,
+				{ backgroundColor: colors.background },
+			]}
 		>
 			<TouchableOpacity
 				style={styles.closeButton}
@@ -39,9 +44,11 @@ export function ModalScreen({ title, subtitle, children }: ModalScreenProps) {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
+		padding: 20,
+	},
+	centered: {
 		justifyContent: 'center',
 		alignItems: 'center',
-		padding: 20,
 	},
 	closeButton: {
 		position: 'absolute',
