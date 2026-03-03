@@ -1,6 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
 import { Link, router } from 'expo-router';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import {
 	ActivityIndicator,
 	StyleSheet,
@@ -19,6 +19,8 @@ export default function SignupScreen() {
 	const [confirmPassword, setConfirmPassword] = useState('');
 	const [error, setError] = useState('');
 	const [success, setSuccess] = useState(false);
+	const passwordRef = useRef<TextInput>(null);
+	const confirmPasswordRef = useRef<TextInput>(null);
 	const { signUp, isLoading } = useAuth();
 	const { isDark } = useTheme();
 
@@ -119,9 +121,12 @@ export default function SignupScreen() {
 					autoCapitalize="none"
 					keyboardType="email-address"
 					editable={!isLoading}
+					returnKeyType="next"
+					onSubmitEditing={() => passwordRef.current?.focus()}
 				/>
 
 				<TextInput
+					ref={passwordRef}
 					style={[
 						styles.input,
 						{
@@ -135,9 +140,12 @@ export default function SignupScreen() {
 					onChangeText={setPassword}
 					secureTextEntry
 					editable={!isLoading}
+					returnKeyType="next"
+					onSubmitEditing={() => confirmPasswordRef.current?.focus()}
 				/>
 
 				<TextInput
+					ref={confirmPasswordRef}
 					style={[
 						styles.input,
 						{
@@ -151,6 +159,8 @@ export default function SignupScreen() {
 					onChangeText={setConfirmPassword}
 					secureTextEntry
 					editable={!isLoading}
+					returnKeyType="done"
+					onSubmitEditing={handleSignup}
 				/>
 
 				<TouchableOpacity

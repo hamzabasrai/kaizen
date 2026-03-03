@@ -1,6 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
 import { Link } from 'expo-router';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import {
 	ActivityIndicator,
 	StyleSheet,
@@ -17,6 +17,7 @@ export default function LoginScreen() {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [error, setError] = useState('');
+	const passwordRef = useRef<TextInput>(null);
 	const { signIn, signInAnonymously, isLoading } = useAuth();
 	const { isDark } = useTheme();
 
@@ -84,9 +85,12 @@ export default function LoginScreen() {
 					autoCapitalize="none"
 					keyboardType="email-address"
 					editable={!isLoading}
+					returnKeyType="next"
+					onSubmitEditing={() => passwordRef.current?.focus()}
 				/>
 
 				<TextInput
+					ref={passwordRef}
 					style={[
 						styles.input,
 						{
@@ -100,6 +104,8 @@ export default function LoginScreen() {
 					onChangeText={setPassword}
 					secureTextEntry
 					editable={!isLoading}
+					returnKeyType="done"
+					onSubmitEditing={handleLogin}
 				/>
 
 				<TouchableOpacity
