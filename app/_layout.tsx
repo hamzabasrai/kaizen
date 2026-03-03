@@ -1,7 +1,9 @@
-import { Stack, useRouter, useSegments } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
 import { View } from 'react-native';
+
+import { Stack, useRouter, useSegments } from 'expo-router';
+import { StatusBar } from 'expo-status-bar';
+
 import { ErrorBoundary } from '~/components/ErrorBoundary';
 import { AuthProvider, useAuth } from '~/context/AuthContext';
 import { useTheme } from '~/store/useTheme';
@@ -34,14 +36,8 @@ function ProtectedLayout() {
 				<Stack.Screen name="(tabs)" />
 				<Stack.Screen name="habit/new" options={{ presentation: 'modal' }} />
 				<Stack.Screen name="habit/[id]" options={{ presentation: 'modal' }} />
-				<Stack.Screen
-					name="countdown/new"
-					options={{ presentation: 'modal' }}
-				/>
-				<Stack.Screen
-					name="countdown/[id]"
-					options={{ presentation: 'modal' }}
-				/>
+				<Stack.Screen name="countdown/new" options={{ presentation: 'modal' }} />
+				<Stack.Screen name="countdown/[id]" options={{ presentation: 'modal' }} />
 			</Stack>
 		</View>
 	);

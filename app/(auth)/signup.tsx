@@ -1,19 +1,14 @@
+import { useRef, useState } from 'react';
+import { ActivityIndicator, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+
 import { Ionicons } from '@expo/vector-icons';
 import { Link, router } from 'expo-router';
-import { useRef, useState } from 'react';
-import {
-	ActivityIndicator,
-	StyleSheet,
-	Text,
-	TextInput,
-	TouchableOpacity,
-	View,
-} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+
 import { ErrorBanner } from '~/components/ErrorBanner';
 import { ThemedTextInput } from '~/components/ThemedTextInput';
 import { useAuth } from '~/context/AuthContext';
-import { MIN_PASSWORD_LENGTH, getErrorMessage, isValidEmail } from '~/lib/validation';
+import { getErrorMessage, isValidEmail, MIN_PASSWORD_LENGTH } from '~/lib/validation';
 import { useTheme } from '~/store/useTheme';
 import { authStyles } from '~/styles/auth';
 
@@ -60,22 +55,11 @@ export default function SignupScreen() {
 
 	if (success) {
 		return (
-			<SafeAreaView
-				style={[
-					authStyles.container,
-					{ backgroundColor: colors.background },
-				]}
-			>
+			<SafeAreaView style={[authStyles.container, { backgroundColor: colors.background }]}>
 				<View style={styles.successContainer}>
 					<Ionicons name="checkmark-circle" size={64} color={colors.success} />
-					<Text
-						style={[styles.successTitle, { color: colors.text }]}
-					>
-						Account Created!
-					</Text>
-					<Text
-						style={[styles.successText, { color: colors.textSecondary }]}
-					>
+					<Text style={[styles.successTitle, { color: colors.text }]}>Account Created!</Text>
+					<Text style={[styles.successText, { color: colors.textSecondary }]}>
 						Please check your email to confirm your account before signing in.
 					</Text>
 					<TouchableOpacity
@@ -90,16 +74,10 @@ export default function SignupScreen() {
 	}
 
 	return (
-		<SafeAreaView
-			style={[authStyles.container, { backgroundColor: colors.background }]}
-		>
+		<SafeAreaView style={[authStyles.container, { backgroundColor: colors.background }]}>
 			<View style={authStyles.header}>
-				<Text style={[authStyles.title, { color: colors.text }]}>
-					Create Account
-				</Text>
-				<Text style={[authStyles.subtitle, { color: colors.textSecondary }]}>
-					Start tracking your habits today
-				</Text>
+				<Text style={[authStyles.title, { color: colors.text }]}>Create Account</Text>
+				<Text style={[authStyles.subtitle, { color: colors.textSecondary }]}>Start tracking your habits today</Text>
 			</View>
 
 			<ErrorBanner message={error} />
@@ -143,18 +121,12 @@ export default function SignupScreen() {
 					onPress={handleSignup}
 					disabled={isLoading}
 				>
-					{isLoading ? (
-						<ActivityIndicator color="#fff" />
-					) : (
-						<Text style={authStyles.buttonText}>Create Account</Text>
-					)}
+					{isLoading ? <ActivityIndicator color="#fff" /> : <Text style={authStyles.buttonText}>Create Account</Text>}
 				</TouchableOpacity>
 			</View>
 
 			<View style={authStyles.footer}>
-				<Text style={{ color: colors.textSecondary }}>
-					Already have an account?{' '}
-				</Text>
+				<Text style={{ color: colors.textSecondary }}>Already have an account? </Text>
 				<Link href="/(auth)/login" asChild>
 					<TouchableOpacity>
 						<Text style={authStyles.linkText}>Sign In</Text>

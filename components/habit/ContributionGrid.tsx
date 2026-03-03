@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
+
 import { useTheme } from '~/store/useTheme';
 
 interface ContributionGridProps {
@@ -62,10 +63,7 @@ export const ContributionGrid = React.memo(function ContributionGrid({
 							return (
 								<View
 									key={`${weekIndex}-${dayIndex}`}
-									style={[
-										styles.cell,
-										{ backgroundColor: getCellColor(level) },
-									]}
+									style={[styles.cell, { backgroundColor: getCellColor(level) }]}
 								/>
 							);
 						})}

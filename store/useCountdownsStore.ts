@@ -1,8 +1,10 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
+
 import * as countdownService from '~/services/countdowns';
 import { Countdown, CountdownWithDaysRemaining } from '~/types/countdown';
+
 import { withAsync } from './helpers';
 
 interface CountdownsState {
@@ -14,9 +16,7 @@ interface CountdownsState {
 	// Actions
 	fetchCountdowns: () => Promise<void>;
 	fetchCountdown: (id: string) => Promise<void>;
-	createCountdown: (
-		countdown: Omit<Countdown, 'id' | 'created_at' | 'updated_at'>,
-	) => Promise<void>;
+	createCountdown: (countdown: Omit<Countdown, 'id' | 'created_at' | 'updated_at'>) => Promise<void>;
 	updateCountdown: (id: string, updates: Partial<Countdown>) => Promise<void>;
 	deleteCountdown: (id: string) => Promise<void>;
 	markComplete: (id: string) => Promise<void>;
@@ -34,8 +34,7 @@ export const useCountdownsStore = create<CountdownsState>()(
 
 			fetchCountdowns: () =>
 				withAsync(set, 'Failed to fetch countdowns', async () => {
-					const countdowns =
-						await countdownService.getCountdownsWithDaysRemaining();
+					const countdowns = await countdownService.getCountdownsWithDaysRemaining();
 					return { countdowns };
 				}),
 
@@ -48,17 +47,13 @@ export const useCountdownsStore = create<CountdownsState>()(
 			createCountdown: countdown =>
 				withAsync(set, 'Failed to create countdown', async () => {
 					await countdownService.createCountdown(countdown);
-					const countdowns =
-						await countdownService.getCountdownsWithDaysRemaining();
+					const countdowns = await countdownService.getCountdownsWithDaysRemaining();
 					return { countdowns };
 				}),
 
 			updateCountdown: (id, updates) =>
 				withAsync(set, 'Failed to update countdown', async () => {
-					const updatedCountdown = await countdownService.updateCountdown(
-						id,
-						updates,
-					);
+					const updatedCountdown = await countdownService.updateCountdown(id, updates);
 					const { countdowns, currentCountdown } = get();
 					return {
 						countdowns: countdowns.map(c =>
@@ -66,16 +61,11 @@ export const useCountdownsStore = create<CountdownsState>()(
 								? {
 										...c,
 										...updatedCountdown,
-										...countdownService.calculateDaysRemaining(
-											updatedCountdown.target_date,
-										),
+										...countdownService.calculateDaysRemaining(updatedCountdown.target_date),
 									}
 								: c,
 						),
-						currentCountdown:
-							currentCountdown?.id === id
-								? updatedCountdown
-								: currentCountdown,
+						currentCountdown: currentCountdown?.id === id ? updatedCountdown : currentCountdown,
 					};
 				}),
 
@@ -85,16 +75,14 @@ export const useCountdownsStore = create<CountdownsState>()(
 					const { countdowns, currentCountdown } = get();
 					return {
 						countdowns: countdowns.filter(c => c.id !== id),
-						currentCountdown:
-							currentCountdown?.id === id ? null : currentCountdown,
+						currentCountdown: currentCountdown?.id === id ? null : currentCountdown,
 					};
 				}),
 
 			markComplete: id =>
 				withAsync(set, 'Failed to mark countdown complete', async () => {
 					await countdownService.markCountdownComplete(id);
-					const countdowns =
-						await countdownService.getCountdownsWithDaysRemaining();
+					const countdowns = await countdownService.getCountdownsWithDaysRemaining();
 					return { countdowns };
 				}),
 

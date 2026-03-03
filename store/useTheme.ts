@@ -1,8 +1,10 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useColorScheme } from 'react-native';
 import { useEffect, useMemo } from 'react';
+import { useColorScheme } from 'react-native';
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
+
 import { UserSettings } from '~/types';
 
 // --- Palette ---

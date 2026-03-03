@@ -1,4 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native';
+
 import { useTheme } from '~/store/useTheme';
 
 interface EmptyStateProps {
@@ -10,9 +11,7 @@ export function EmptyState({ message }: EmptyStateProps) {
 
 	return (
 		<View style={styles.container}>
-			<Text style={[styles.text, { color: colors.textSecondary }]}>
-				{message}
-			</Text>
+			<Text style={[styles.text, { color: colors.textSecondary }]}>{message}</Text>
 		</View>
 	);
 }

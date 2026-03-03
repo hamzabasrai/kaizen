@@ -1,6 +1,8 @@
-import { Link } from 'expo-router';
 import { useCallback, useEffect, useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
+
+import { Link } from 'expo-router';
+
 import { EmptyState } from '~/components/EmptyState';
 import { FAB } from '~/components/FAB';
 import { HabitCard } from '~/components/habit/HabitCard';
@@ -13,9 +15,7 @@ export default function HabitsScreen() {
 	const { habits, fetchHabits, loadingCount } = useHabitsStore();
 	const isLoading = loadingCount > 0;
 	const { colors } = useTheme();
-	const [habitsWithCompletions, setHabitsWithCompletions] = useState<
-		HabitWithCompletions[]
-	>([]);
+	const [habitsWithCompletions, setHabitsWithCompletions] = useState<HabitWithCompletions[]>([]);
 
 	const loadCompletions = useCallback(async () => {
 		if (habits.length === 0) {
@@ -23,9 +23,7 @@ export default function HabitsScreen() {
 			return;
 		}
 		try {
-			const completionsMap = await habitService.getAllCompletions(
-				habits.map(h => h.id),
-			);
+			const completionsMap = await habitService.getAllCompletions(habits.map(h => h.id));
 			setHabitsWithCompletions(
 				habits.map(habit => ({
 					...habit,
@@ -34,9 +32,7 @@ export default function HabitsScreen() {
 			);
 		} catch {
 			// Completions fetch failed — keep showing habits without completions
-			setHabitsWithCompletions(
-				habits.map(habit => ({ ...habit, completions: [] })),
-			);
+			setHabitsWithCompletions(habits.map(habit => ({ ...habit, completions: [] })));
 		}
 	}, [habits]);
 
@@ -55,9 +51,7 @@ export default function HabitsScreen() {
 	);
 
 	return (
-		<View
-			style={[styles.container, { backgroundColor: colors.background }]}
-		>
+		<View style={[styles.container, { backgroundColor: colors.background }]}>
 			<FlatList
 				data={habitsWithCompletions}
 				renderItem={renderHabit}
@@ -65,11 +59,7 @@ export default function HabitsScreen() {
 				contentContainerStyle={styles.list}
 				refreshing={isLoading}
 				onRefresh={fetchHabits}
-				ListEmptyComponent={
-					isLoading ? null : (
-						<EmptyState message="No habits yet. Add your first habit!" />
-					)
-				}
+				ListEmptyComponent={isLoading ? null : <EmptyState message="No habits yet. Add your first habit!" />}
 			/>
 			<FAB href="/habit/new" label="Add new habit" />
 		</View>

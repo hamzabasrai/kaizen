@@ -1,8 +1,10 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
+
 import * as habitService from '~/services/habits';
 import { Habit, HabitCompletion, HabitWithStats } from '~/types/habit';
+
 import { withAsync } from './helpers';
 
 interface HabitsState {
@@ -15,16 +17,10 @@ interface HabitsState {
 	// Actions
 	fetchHabits: () => Promise<void>;
 	fetchHabit: (id: string) => Promise<void>;
-	createHabit: (
-		habit: Omit<Habit, 'id' | 'created_at' | 'updated_at'>,
-	) => Promise<void>;
+	createHabit: (habit: Omit<Habit, 'id' | 'created_at' | 'updated_at'>) => Promise<void>;
 	updateHabit: (id: string, updates: Partial<Habit>) => Promise<void>;
 	deleteHabit: (id: string) => Promise<void>;
-	toggleCompletion: (
-		habitId: string,
-		date: string,
-		completed: boolean,
-	) => Promise<void>;
+	toggleCompletion: (habitId: string, date: string, completed: boolean) => Promise<void>;
 	clearError: () => void;
 	reset: () => void;
 }
@@ -62,10 +58,7 @@ export const useHabitsStore = create<HabitsState>()(
 					const { habits, currentHabit } = get();
 					return {
 						habits: habits.map(h => (h.id === id ? updatedHabit : h)),
-						currentHabit:
-							currentHabit?.id === id
-								? { ...currentHabit, ...updatedHabit }
-								: currentHabit,
+						currentHabit: currentHabit?.id === id ? { ...currentHabit, ...updatedHabit } : currentHabit,
 					};
 				}),
 
@@ -107,11 +100,7 @@ export const useHabitsStore = create<HabitsState>()(
 				});
 
 				try {
-					await habitService.toggleHabitCompletion(
-						habitId,
-						date,
-						completed,
-					);
+					await habitService.toggleHabitCompletion(habitId, date, completed);
 					const { currentHabit } = get();
 					if (currentHabit?.id === habitId) {
 						await get().fetchHabit(habitId);
@@ -120,10 +109,7 @@ export const useHabitsStore = create<HabitsState>()(
 					// Rollback on failure
 					set({
 						completions: prevCompletions,
-						error:
-							err instanceof Error
-								? err.message
-								: 'Failed to toggle completion',
+						error: err instanceof Error ? err.message : 'Failed to toggle completion',
 					});
 				}
 			},
@@ -142,7 +128,10 @@ export const useHabitsStore = create<HabitsState>()(
 		{
 			name: 'habits-storage',
 			storage: createJSONStorage(() => AsyncStorage),
-			partialize: state => ({ habits: state.habits, completions: state.completions }),
+			partialize: state => ({
+				habits: state.habits,
+				completions: state.completions,
+			}),
 		},
 	),
 );

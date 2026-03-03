@@ -1,5 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
 import { Tabs } from 'expo-router';
+
 import { useTheme } from '~/store/useTheme';
 
 export default function TabLayout() {
@@ -25,11 +26,7 @@ export default function TabLayout() {
 				options={{
 					title: 'Habits',
 					tabBarIcon: ({ color, size, focused }) => (
-						<Ionicons
-							name={focused ? 'checkbox' : 'checkbox-outline'}
-							size={size}
-							color={color}
-						/>
+						<Ionicons name={focused ? 'checkbox' : 'checkbox-outline'} size={size} color={color} />
 					),
 				}}
 			/>
@@ -38,11 +35,7 @@ export default function TabLayout() {
 				options={{
 					title: 'Countdowns',
 					tabBarIcon: ({ color, size, focused }) => (
-						<Ionicons
-							name={focused ? 'calendar' : 'calendar-outline'}
-							size={size}
-							color={color}
-						/>
+						<Ionicons name={focused ? 'calendar' : 'calendar-outline'} size={size} color={color} />
 					),
 				}}
 			/>

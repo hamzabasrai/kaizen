@@ -1,6 +1,8 @@
-import { Link } from 'expo-router';
 import { useEffect } from 'react';
 import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+
+import { Link } from 'expo-router';
+
 import { EmptyState } from '~/components/EmptyState';
 import { FAB } from '~/components/FAB';
 import { useCountdownsStore } from '~/store/useCountdownsStore';
@@ -31,35 +33,14 @@ export default function CountdownsScreen() {
 
 		return (
 			<Link href={`/countdown/${item.id}`} asChild>
-				<TouchableOpacity
-					style={[
-						styles.countdownCard,
-						{ backgroundColor: colors.surface },
-					]}
-				>
+				<TouchableOpacity style={[styles.countdownCard, { backgroundColor: colors.surface }]}>
 					<View style={styles.countdownContent}>
 						<Text style={styles.countdownIcon}>{item.icon || '📅'}</Text>
 						<View style={styles.countdownInfo}>
-							<Text
-								style={[
-									styles.countdownTitle,
-									{ color: colors.text },
-								]}
-							>
-								{item.title}
-							</Text>
-							<Text
-								style={[
-									styles.countdownDate,
-									{ color: colors.textSecondary },
-								]}
-							>
-								{item.target_date}
-							</Text>
+							<Text style={[styles.countdownTitle, { color: colors.text }]}>{item.title}</Text>
+							<Text style={[styles.countdownDate, { color: colors.textSecondary }]}>{item.target_date}</Text>
 						</View>
-						<Text style={[styles.daysRemaining, { color: daysColor }]}>
-							{daysText}
-						</Text>
+						<Text style={[styles.daysRemaining, { color: daysColor }]}>{daysText}</Text>
 					</View>
 				</TouchableOpacity>
 			</Link>
@@ -67,9 +48,7 @@ export default function CountdownsScreen() {
 	};
 
 	return (
-		<View
-			style={[styles.container, { backgroundColor: colors.background }]}
-		>
+		<View style={[styles.container, { backgroundColor: colors.background }]}>
 			<FlatList
 				data={countdowns}
 				renderItem={renderCountdown}
@@ -77,11 +56,7 @@ export default function CountdownsScreen() {
 				contentContainerStyle={styles.list}
 				refreshing={isLoading}
 				onRefresh={fetchCountdowns}
-				ListEmptyComponent={
-					isLoading ? null : (
-						<EmptyState message="No countdowns yet. Add your first countdown!" />
-					)
-				}
+				ListEmptyComponent={isLoading ? null : <EmptyState message="No countdowns yet. Add your first countdown!" />}
 			/>
 			<FAB href="/countdown/new" label="Add new countdown" />
 		</View>

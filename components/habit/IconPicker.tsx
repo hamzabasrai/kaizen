@@ -1,10 +1,8 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+
 import { useTheme } from '~/store/useTheme';
 
-const PRESET_ICONS = [
-	'💪', '📖', '🏃', '💧', '🧘', '✍️', '🎵', '😴',
-	'🥗', '💊', '🧹', '🌱', '🎯', '⏰', '🧠', '❤️',
-];
+const PRESET_ICONS = ['💪', '📖', '🏃', '💧', '🧘', '✍️', '🎵', '😴', '🥗', '💊', '🧹', '🌱', '🎯', '⏰', '🧠', '❤️'];
 
 interface IconPickerProps {
 	selected: string | null;
@@ -23,7 +21,9 @@ export function IconPicker({ selected, onSelect }: IconPickerProps) {
 						key={icon}
 						style={[
 							styles.cell,
-							{ backgroundColor: isSelected ? `${colors.primary}20` : colors.surface },
+							{
+								backgroundColor: isSelected ? `${colors.primary}20` : colors.surface,
+							},
 						]}
 						onPress={() => onSelect(icon)}
 						accessibilityLabel={`Icon ${icon}`}

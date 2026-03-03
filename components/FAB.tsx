@@ -1,6 +1,8 @@
+import { StyleSheet, TouchableOpacity } from 'react-native';
+
 import { Ionicons } from '@expo/vector-icons';
 import { Href, useRouter } from 'expo-router';
-import { StyleSheet, TouchableOpacity } from 'react-native';
+
 import { useTheme } from '~/store/useTheme';
 
 interface FABProps {

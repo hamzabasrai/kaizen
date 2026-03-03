@@ -1,17 +1,10 @@
-import { Ionicons } from '@expo/vector-icons';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
+
+import { Ionicons } from '@expo/vector-icons';
+
 import { useTheme } from '~/store/useTheme';
 
-const PRESET_COLORS = [
-	'#FF3B30',
-	'#FF9500',
-	'#FFD60A',
-	'#34C759',
-	'#007AFF',
-	'#5856D6',
-	'#AF52DE',
-	'#8E8E93',
-];
+const PRESET_COLORS = ['#FF3B30', '#FF9500', '#FFD60A', '#34C759', '#007AFF', '#5856D6', '#AF52DE', '#8E8E93'];
 
 interface ColorPickerProps {
 	selected: string | null;
@@ -36,9 +29,7 @@ export function ColorPicker({ selected, onSelect }: ColorPickerProps) {
 						onPress={() => onSelect(color)}
 						accessibilityLabel={`Color ${color}`}
 					>
-						{isSelected && (
-							<Ionicons name="checkmark" size={18} color="#fff" />
-						)}
+						{isSelected && <Ionicons name="checkmark" size={18} color="#fff" />}
 					</TouchableOpacity>
 				);
 			})}

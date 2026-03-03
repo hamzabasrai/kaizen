@@ -1,5 +1,7 @@
-import { Session, User } from '@supabase/supabase-js';
 import React, { createContext, useContext, useEffect, useState } from 'react';
+
+import { Session, User } from '@supabase/supabase-js';
+
 import * as authService from '~/services/auth';
 import { useCountdownsStore } from '~/store/useCountdownsStore';
 import { useHabitsStore } from '~/store/useHabitsStore';
@@ -26,14 +28,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 		let initialLoadDone = false;
 
 		// Listen for auth changes — takes priority once fired
-		const { data: { subscription } } = authService.onAuthStateChange(
-			(_event, session) => {
-				initialLoadDone = true;
-				setSession(session);
-				setUser(session?.user ?? null);
-				setIsLoading(false);
-			},
-		);
+		const {
+			data: { subscription },
+		} = authService.onAuthStateChange((_event, session) => {
+			initialLoadDone = true;
+			setSession(session);
+			setUser(session?.user ?? null);
+			setIsLoading(false);
+		});
 
 		// Server-verify the current user on startup
 		authService

@@ -1,7 +1,3 @@
-import { Ionicons } from '@expo/vector-icons';
-import DateTimePicker from '@react-native-community/datetimepicker';
-import { useRouter } from 'expo-router';
-import { format } from 'date-fns';
 import { useState } from 'react';
 import {
 	ActivityIndicator,
@@ -14,12 +10,18 @@ import {
 	TouchableOpacity,
 	View,
 } from 'react-native';
+
+import { Ionicons } from '@expo/vector-icons';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import { format } from 'date-fns';
+import { useRouter } from 'expo-router';
+
 import { ErrorBanner } from '~/components/ErrorBanner';
-import { ModalScreen } from '~/components/ModalScreen';
-import { ThemedTextInput } from '~/components/ThemedTextInput';
 import { ColorPicker } from '~/components/habit/ColorPicker';
 import { DayOfWeekPicker } from '~/components/habit/DayOfWeekPicker';
 import { IconPicker } from '~/components/habit/IconPicker';
+import { ModalScreen } from '~/components/ModalScreen';
+import { ThemedTextInput } from '~/components/ThemedTextInput';
 import { getErrorMessage } from '~/lib/validation';
 import { useHabitsStore } from '~/store/useHabitsStore';
 import { useTheme } from '~/store/useTheme';
@@ -61,9 +63,7 @@ export default function NewHabitScreen() {
 	const [isSubmitting, setIsSubmitting] = useState(false);
 
 	const handleToggleDay = (day: number) => {
-		setReminderDays(prev =>
-			prev.includes(day) ? prev.filter(d => d !== day) : [...prev, day].sort(),
-		);
+		setReminderDays(prev => (prev.includes(day) ? prev.filter(d => d !== day) : [...prev, day].sort()));
 	};
 
 	const handleSubmit = async () => {
@@ -114,12 +114,7 @@ export default function NewHabitScreen() {
 
 					{/* --- Essential Section --- */}
 					<Text style={[styles.label, { color: colors.text }]}>Name</Text>
-					<ThemedTextInput
-						placeholder="e.g. Morning run"
-						value={name}
-						onChangeText={setName}
-						autoFocus
-					/>
+					<ThemedTextInput placeholder="e.g. Morning run" value={name} onChangeText={setName} autoFocus />
 
 					<Text style={[styles.label, { color: colors.text }]}>Notes</Text>
 					<ThemedTextInput
@@ -140,18 +135,9 @@ export default function NewHabitScreen() {
 					<View style={[styles.divider, { backgroundColor: colors.divider }]} />
 
 					{/* --- Advanced Section (accordion) --- */}
-					<TouchableOpacity
-						style={styles.accordionHeader}
-						onPress={() => setAdvancedExpanded(prev => !prev)}
-					>
-						<Text style={[styles.accordionTitle, { color: colors.text }]}>
-							Advanced
-						</Text>
-						<Ionicons
-							name={advancedExpanded ? 'chevron-up' : 'chevron-down'}
-							size={20}
-							color={colors.textSecondary}
-						/>
+					<TouchableOpacity style={styles.accordionHeader} onPress={() => setAdvancedExpanded(prev => !prev)}>
+						<Text style={[styles.accordionTitle, { color: colors.text }]}>Advanced</Text>
+						<Ionicons name={advancedExpanded ? 'chevron-up' : 'chevron-down'} size={20} color={colors.textSecondary} />
 					</TouchableOpacity>
 
 					{advancedExpanded && (
@@ -167,19 +153,12 @@ export default function NewHabitScreen() {
 											style={[
 												styles.pill,
 												{
-													backgroundColor: isActive
-														? colors.primary
-														: colors.surface,
+													backgroundColor: isActive ? colors.primary : colors.surface,
 												},
 											]}
 											onPress={() => setFrequencyPeriod(opt)}
 										>
-											<Text
-												style={[
-													styles.pillText,
-													{ color: isActive ? '#fff' : colors.text },
-												]}
-											>
+											<Text style={[styles.pillText, { color: isActive ? '#fff' : colors.text }]}>
 												{opt.charAt(0).toUpperCase() + opt.slice(1)}
 											</Text>
 										</TouchableOpacity>
@@ -201,9 +180,7 @@ export default function NewHabitScreen() {
 
 							{/* Reminders */}
 							<View style={styles.reminderRow}>
-								<Text style={[styles.label, { color: colors.text, marginBottom: 0 }]}>
-									Reminders
-								</Text>
+								<Text style={[styles.label, { color: colors.text, marginBottom: 0 }]}>Reminders</Text>
 								<Switch
 									value={reminderEnabled}
 									onValueChange={setReminderEnabled}
@@ -228,9 +205,7 @@ export default function NewHabitScreen() {
 												onPress={() => setShowTimePicker(true)}
 											>
 												<Ionicons name="time-outline" size={20} color={colors.text} />
-												<Text style={[styles.timeText, { color: colors.text }]}>
-													{format(reminderTime, 'hh:mm a')}
-												</Text>
+												<Text style={[styles.timeText, { color: colors.text }]}>{format(reminderTime, 'hh:mm a')}</Text>
 											</TouchableOpacity>
 											{showTimePicker && (
 												<DateTimePicker
@@ -245,13 +220,8 @@ export default function NewHabitScreen() {
 										</>
 									)}
 
-									<Text style={[styles.label, { color: colors.text }]}>
-										Repeat on
-									</Text>
-									<DayOfWeekPicker
-										selected={reminderDays}
-										onToggle={handleToggleDay}
-									/>
+									<Text style={[styles.label, { color: colors.text }]}>Repeat on</Text>
+									<DayOfWeekPicker selected={reminderDays} onToggle={handleToggleDay} />
 								</View>
 							)}
 						</View>

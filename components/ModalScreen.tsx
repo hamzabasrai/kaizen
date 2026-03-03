@@ -1,7 +1,9 @@
+import { StyleSheet, Text, TouchableOpacity } from 'react-native';
+
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
-import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+
 import { useTheme } from '~/store/useTheme';
 
 interface ModalScreenProps {
@@ -17,25 +19,13 @@ export function ModalScreen({ title, subtitle, align = 'center', children }: Mod
 
 	return (
 		<SafeAreaView
-			style={[
-				styles.container,
-				align === 'center' && styles.centered,
-				{ backgroundColor: colors.background },
-			]}
+			style={[styles.container, align === 'center' && styles.centered, { backgroundColor: colors.background }]}
 		>
-			<TouchableOpacity
-				style={styles.closeButton}
-				onPress={() => router.back()}
-				accessibilityLabel="Close"
-			>
+			<TouchableOpacity style={styles.closeButton} onPress={() => router.back()} accessibilityLabel="Close">
 				<Ionicons name="close" size={28} color={colors.text} />
 			</TouchableOpacity>
 			<Text style={[styles.title, { color: colors.text }]}>{title}</Text>
-			{subtitle && (
-				<Text style={[styles.subtitle, { color: colors.textSecondary }]}>
-					{subtitle}
-				</Text>
-			)}
+			{subtitle && <Text style={[styles.subtitle, { color: colors.textSecondary }]}>{subtitle}</Text>}
 			{children}
 		</SafeAreaView>
 	);

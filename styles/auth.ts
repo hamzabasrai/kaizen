@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+
 import { shared } from '~/store/useTheme';
 
 export const authStyles = StyleSheet.create({

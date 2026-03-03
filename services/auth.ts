@@ -1,4 +1,5 @@
 import { AuthChangeEvent, Session } from '@supabase/supabase-js';
+
 import { Database } from '~/lib/database.types';
 import { supabase } from '~/lib/supabase';
 import { Profile, UserSettings } from '~/types';
@@ -47,20 +48,13 @@ export async function getSession() {
 }
 
 export async function getProfile(userId: string): Promise<Profile | null> {
-	const { data, error } = await supabase
-		.from('profiles')
-		.select('*')
-		.eq('id', userId)
-		.maybeSingle();
+	const { data, error } = await supabase.from('profiles').select('*').eq('id', userId).maybeSingle();
 
 	if (error) throw error;
 	return data as Profile | null;
 }
 
-export async function updateProfile(
-	userId: string,
-	updates: Partial<Profile>,
-): Promise<Profile> {
+export async function updateProfile(userId: string, updates: Partial<Profile>): Promise<Profile> {
 	const { data, error } = await supabase
 		.from('profiles')
 		.update(updates as Database['public']['Tables']['profiles']['Update'])
@@ -72,10 +66,7 @@ export async function updateProfile(
 	return data as Profile;
 }
 
-export async function updateUserSettings(
-	userId: string,
-	settings: Partial<UserSettings>,
-): Promise<Profile> {
+export async function updateUserSettings(userId: string, settings: Partial<UserSettings>): Promise<Profile> {
 	const profile = await getProfile(userId);
 	if (!profile) throw new Error('Profile not found');
 
@@ -88,8 +79,6 @@ export async function updateUserSettings(
 	return await updateProfile(userId, { settings: newSettings });
 }
 
-export function onAuthStateChange(
-	callback: (event: AuthChangeEvent, session: Session | null) => void,
-) {
+export function onAuthStateChange(callback: (event: AuthChangeEvent, session: Session | null) => void) {
 	return supabase.auth.onAuthStateChange(callback);
 }

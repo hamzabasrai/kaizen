@@ -64,6 +64,7 @@ screens/components
 ### Environment Variables
 
 Defined in `.env.local` (gitignored), example in `.env.example`:
+
 - `EXPO_PUBLIC_SUPABASE_URL`
 - `EXPO_PUBLIC_SUPABASE_KEY`
 

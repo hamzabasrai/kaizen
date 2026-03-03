@@ -1,4 +1,5 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+
 import { useTheme } from '~/store/useTheme';
 
 const DAY_LABELS = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
@@ -27,14 +28,7 @@ export function DayOfWeekPicker({ selected, onToggle }: DayOfWeekPickerProps) {
 						onPress={() => onToggle(index)}
 						accessibilityLabel={`${['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][index]}`}
 					>
-						<Text
-							style={[
-								styles.label,
-								{ color: isSelected ? '#fff' : colors.text },
-							]}
-						>
-							{label}
-						</Text>
+						<Text style={[styles.label, { color: isSelected ? '#fff' : colors.text }]}>{label}</Text>
 					</TouchableOpacity>
 				);
 			})}

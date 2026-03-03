@@ -1,17 +1,7 @@
-import {
-	differenceInDays,
-	isBefore,
-	isSameDay,
-	parseISO,
-	startOfDay,
-} from 'date-fns';
+import { differenceInDays, isBefore, isSameDay, parseISO, startOfDay } from 'date-fns';
+
 import { requireUserId, supabase } from '~/lib/supabase';
-import {
-	Countdown,
-	CountdownInsert,
-	CountdownUpdate,
-	CountdownWithDaysRemaining,
-} from '~/types/countdown';
+import { Countdown, CountdownInsert, CountdownUpdate, CountdownWithDaysRemaining } from '~/types/countdown';
 
 export async function getCountdowns(): Promise<Countdown[]> {
 	const userId = await requireUserId();
@@ -27,20 +17,13 @@ export async function getCountdowns(): Promise<Countdown[]> {
 
 export async function getCountdownById(id: string): Promise<Countdown | null> {
 	const userId = await requireUserId();
-	const { data, error } = await supabase
-		.from('countdowns')
-		.select('*')
-		.eq('id', id)
-		.eq('user_id', userId)
-		.single();
+	const { data, error } = await supabase.from('countdowns').select('*').eq('id', id).eq('user_id', userId).single();
 
 	if (error) throw error;
 	return data as Countdown | null;
 }
 
-export async function createCountdown(
-	countdown: CountdownInsert,
-): Promise<Countdown> {
+export async function createCountdown(countdown: CountdownInsert): Promise<Countdown> {
 	const userId = await requireUserId();
 	const { data, error } = await supabase
 		.from('countdowns')
@@ -52,10 +35,7 @@ export async function createCountdown(
 	return data as Countdown;
 }
 
-export async function updateCountdown(
-	id: string,
-	updates: CountdownUpdate,
-): Promise<Countdown> {
+export async function updateCountdown(id: string, updates: CountdownUpdate): Promise<Countdown> {
 	const userId = await requireUserId();
 	const { data, error } = await supabase
 		.from('countdowns')
@@ -71,11 +51,7 @@ export async function updateCountdown(
 
 export async function deleteCountdown(id: string): Promise<void> {
 	const userId = await requireUserId();
-	const { error } = await supabase
-		.from('countdowns')
-		.delete()
-		.eq('id', id)
-		.eq('user_id', userId);
+	const { error } = await supabase.from('countdowns').delete().eq('id', id).eq('user_id', userId);
 
 	if (error) throw error;
 }
@@ -139,9 +115,7 @@ export function calculateDaysRemaining(targetDate: string): {
 	};
 }
 
-export async function getCountdownsWithDaysRemaining(): Promise<
-	CountdownWithDaysRemaining[]
-> {
+export async function getCountdownsWithDaysRemaining(): Promise<CountdownWithDaysRemaining[]> {
 	const countdowns = await getCountdowns();
 
 	return countdowns.map(countdown => ({

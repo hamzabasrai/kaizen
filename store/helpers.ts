@@ -1,6 +1,4 @@
-type SetFn<T> = (
-	partial: Partial<T> | ((state: T) => Partial<T>),
-) => void;
+type SetFn<T> = (partial: Partial<T> | ((state: T) => Partial<T>)) => void;
 
 interface WithLoading {
 	loadingCount: number;

@@ -1,5 +1,7 @@
-import { Ionicons } from '@expo/vector-icons';
 import { Text, View } from 'react-native';
+
+import { Ionicons } from '@expo/vector-icons';
+
 import { shared } from '~/store/useTheme';
 import { authStyles } from '~/styles/auth';
 

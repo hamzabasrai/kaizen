@@ -1,11 +1,5 @@
 import { requireUserId, supabase } from '~/lib/supabase';
-import {
-	Habit,
-	HabitCompletion,
-	HabitInsert,
-	HabitUpdate,
-	HabitWithStats,
-} from '~/types/habit';
+import { Habit, HabitCompletion, HabitInsert, HabitUpdate, HabitWithStats } from '~/types/habit';
 
 export async function getHabits(): Promise<Habit[]> {
 	const userId = await requireUserId();
@@ -21,12 +15,7 @@ export async function getHabits(): Promise<Habit[]> {
 
 export async function getHabitById(id: string): Promise<Habit | null> {
 	const userId = await requireUserId();
-	const { data, error } = await supabase
-		.from('habits')
-		.select('*')
-		.eq('id', id)
-		.eq('user_id', userId)
-		.single();
+	const { data, error } = await supabase.from('habits').select('*').eq('id', id).eq('user_id', userId).single();
 
 	if (error) throw error;
 	return data as Habit | null;
@@ -44,10 +33,7 @@ export async function createHabit(habit: HabitInsert): Promise<Habit> {
 	return data as Habit;
 }
 
-export async function updateHabit(
-	id: string,
-	updates: HabitUpdate,
-): Promise<Habit> {
+export async function updateHabit(id: string, updates: HabitUpdate): Promise<Habit> {
 	const userId = await requireUserId();
 	const { data, error } = await supabase
 		.from('habits')
@@ -63,18 +49,12 @@ export async function updateHabit(
 
 export async function deleteHabit(id: string): Promise<void> {
 	const userId = await requireUserId();
-	const { error } = await supabase
-		.from('habits')
-		.delete()
-		.eq('id', id)
-		.eq('user_id', userId);
+	const { error } = await supabase.from('habits').delete().eq('id', id).eq('user_id', userId);
 
 	if (error) throw error;
 }
 
-export async function getHabitCompletions(
-	habitId: string,
-): Promise<HabitCompletion[]> {
+export async function getHabitCompletions(habitId: string): Promise<HabitCompletion[]> {
 	const userId = await requireUserId();
 	const { data, error } = await supabase
 		.from('habit_completions')
@@ -87,9 +67,7 @@ export async function getHabitCompletions(
 	return (data || []) as HabitCompletion[];
 }
 
-export async function getAllCompletions(
-	habitIds: string[],
-): Promise<Record<string, HabitCompletion[]>> {
+export async function getAllCompletions(habitIds: string[]): Promise<Record<string, HabitCompletion[]>> {
 	if (habitIds.length === 0) return {};
 
 	const userId = await requireUserId();
@@ -155,11 +133,7 @@ export async function toggleHabitCompletion(
 		if (error) throw error;
 		return data as HabitCompletion;
 	} else {
-		const { error } = await supabase
-			.from('habit_completions')
-			.delete()
-			.eq('habit_id', habitId)
-			.eq('date', date);
+		const { error } = await supabase.from('habit_completions').delete().eq('habit_id', habitId).eq('date', date);
 
 		if (error) throw error;
 		return {
@@ -173,9 +147,7 @@ export async function toggleHabitCompletion(
 	}
 }
 
-export async function getHabitWithStats(
-	habitId: string,
-): Promise<HabitWithStats> {
+export async function getHabitWithStats(habitId: string): Promise<HabitWithStats> {
 	const habit = await getHabitById(habitId);
 	if (!habit) throw new Error('Habit not found');
 
@@ -216,9 +188,7 @@ export function calculateHabitStats(completions: HabitCompletion[]) {
 		completionDate.setHours(0, 0, 0, 0);
 
 		if (!prevDate) {
-			const daysDiff = Math.floor(
-				(today.getTime() - completionDate.getTime()) / (1000 * 60 * 60 * 24),
-			);
+			const daysDiff = Math.floor((today.getTime() - completionDate.getTime()) / (1000 * 60 * 60 * 24));
 			if (daysDiff <= 1) {
 				currentStreak = 1;
 				tempStreak = 1;
@@ -226,15 +196,11 @@ export function calculateHabitStats(completions: HabitCompletion[]) {
 				tempStreak = 1;
 			}
 		} else {
-			const daysDiff = Math.floor(
-				(prevDate.getTime() - completionDate.getTime()) / (1000 * 60 * 60 * 24),
-			);
+			const daysDiff = Math.floor((prevDate.getTime() - completionDate.getTime()) / (1000 * 60 * 60 * 24));
 			if (daysDiff === 1) {
 				tempStreak++;
 				if (currentStreak === 0 && tempStreak > 0) {
-					const daysSinceToday = Math.floor(
-						(today.getTime() - prevDate.getTime()) / (1000 * 60 * 60 * 24),
-					);
+					const daysSinceToday = Math.floor((today.getTime() - prevDate.getTime()) / (1000 * 60 * 60 * 24));
 					if (daysSinceToday <= 1) {
 						currentStreak = tempStreak;
 					}
@@ -250,10 +216,7 @@ export function calculateHabitStats(completions: HabitCompletion[]) {
 
 	longestStreak = Math.max(longestStreak, tempStreak, currentStreak);
 
-	const completionRate =
-		completions.length > 0
-			? Math.round((sortedCompletions.length / completions.length) * 100)
-			: 0;
+	const completionRate = completions.length > 0 ? Math.round((sortedCompletions.length / completions.length) * 100) : 0;
 
 	return {
 		current_streak: currentStreak,

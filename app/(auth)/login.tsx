@@ -1,14 +1,9 @@
-import { Link } from 'expo-router';
 import { useRef, useState } from 'react';
-import {
-	ActivityIndicator,
-	StyleSheet,
-	Text,
-	TextInput,
-	TouchableOpacity,
-	View,
-} from 'react-native';
+import { ActivityIndicator, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+
+import { Link } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
+
 import { ErrorBanner } from '~/components/ErrorBanner';
 import { ThemedTextInput } from '~/components/ThemedTextInput';
 import { useAuth } from '~/context/AuthContext';
@@ -53,16 +48,10 @@ export default function LoginScreen() {
 	};
 
 	return (
-		<SafeAreaView
-			style={[authStyles.container, { backgroundColor: colors.background }]}
-		>
+		<SafeAreaView style={[authStyles.container, { backgroundColor: colors.background }]}>
 			<View style={authStyles.header}>
-				<Text style={[authStyles.title, { color: colors.text }]}>
-					Welcome to Kaizen
-				</Text>
-				<Text style={[authStyles.subtitle, { color: colors.textSecondary }]}>
-					Track your habits and countdowns
-				</Text>
+				<Text style={[authStyles.title, { color: colors.text }]}>Welcome to Kaizen</Text>
+				<Text style={[authStyles.subtitle, { color: colors.textSecondary }]}>Track your habits and countdowns</Text>
 			</View>
 
 			<ErrorBanner message={error} />
@@ -95,34 +84,20 @@ export default function LoginScreen() {
 					onPress={handleLogin}
 					disabled={isLoading}
 				>
-					{isLoading ? (
-						<ActivityIndicator color="#fff" />
-					) : (
-						<Text style={authStyles.buttonText}>Sign In</Text>
-					)}
+					{isLoading ? <ActivityIndicator color="#fff" /> : <Text style={authStyles.buttonText}>Sign In</Text>}
 				</TouchableOpacity>
 
 				<TouchableOpacity
-					style={[
-						authStyles.button,
-						styles.anonymousButton,
-						{ backgroundColor: colors.surface },
-					]}
+					style={[authStyles.button, styles.anonymousButton, { backgroundColor: colors.surface }]}
 					onPress={handleAnonymousLogin}
 					disabled={isLoading}
 				>
-					<Text
-						style={[authStyles.buttonText, { color: colors.text }]}
-					>
-						Continue Anonymously
-					</Text>
+					<Text style={[authStyles.buttonText, { color: colors.text }]}>Continue Anonymously</Text>
 				</TouchableOpacity>
 			</View>
 
 			<View style={authStyles.footer}>
-				<Text style={{ color: colors.textSecondary }}>
-					Don&apos;t have an account?{' '}
-				</Text>
+				<Text style={{ color: colors.textSecondary }}>Don&apos;t have an account? </Text>
 				<Link href="/(auth)/signup" asChild>
 					<TouchableOpacity>
 						<Text style={authStyles.linkText}>Sign Up</Text>
