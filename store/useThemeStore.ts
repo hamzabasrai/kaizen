@@ -31,7 +31,9 @@ export const useThemeStore = create<ThemeState>()(
 			},
 
 			setSystemTheme: isDark => {
-				set({ isSystemDark: isDark });
+				if (get().isSystemDark !== isDark) {
+					set({ isSystemDark: isDark });
+				}
 			},
 
 			toggleNotifications: () => {
