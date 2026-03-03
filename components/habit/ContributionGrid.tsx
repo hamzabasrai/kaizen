@@ -27,13 +27,13 @@ export function ContributionGrid({
 		return daysArray;
 	}, []);
 
-	// Get completion level for a date (0-4)
-	const getLevel = (date: string) => {
-		const completion = completions.find(c => c.date === date);
-		if (!completion || !completion.completed) return 0;
+	const completedDates = React.useMemo(
+		() => new Set(completions.filter(c => c.completed).map(c => c.date)),
+		[completions],
+	);
 
-		// For now, simple binary - can be enhanced for multiple completions per day
-		return 4;
+	const getLevel = (date: string) => {
+		return completedDates.has(date) ? 4 : 0;
 	};
 
 	// Group into weeks (columns)
