@@ -127,6 +127,32 @@ export const useHabitsStore = create<HabitsState>()(
 			},
 
 			toggleCompletion: async (habitId, userId, date, completed) => {
+				const prevCompletions = { ...get().completions };
+
+				// Optimistic update
+				set(s => {
+					const habitCompletions = s.completions[habitId] || [];
+					const updatedCompletions = completed
+						? [
+								...habitCompletions,
+								{
+									id: `temp-${date}`,
+									habit_id: habitId,
+									user_id: userId,
+									date,
+									completed: true,
+									created_at: new Date().toISOString(),
+								},
+							]
+						: habitCompletions.filter(c => c.date !== date);
+					return {
+						completions: {
+							...s.completions,
+							[habitId]: updatedCompletions,
+						},
+					};
+				});
+
 				try {
 					await habitService.toggleHabitCompletion(
 						habitId,
@@ -134,13 +160,14 @@ export const useHabitsStore = create<HabitsState>()(
 						date,
 						completed,
 					);
-					// Refresh current habit stats if viewing it
 					const { currentHabit } = get();
 					if (currentHabit?.id === habitId) {
 						await get().fetchHabit(habitId);
 					}
 				} catch (err) {
+					// Rollback on failure
 					set({
+						completions: prevCompletions,
 						error:
 							err instanceof Error
 								? err.message
