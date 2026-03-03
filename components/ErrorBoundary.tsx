@@ -6,6 +6,7 @@ import {
 	TouchableOpacity,
 	View,
 } from 'react-native';
+import { shared } from '~/store/useTheme';
 
 interface Props {
 	children: React.ReactNode;
@@ -74,7 +75,7 @@ const styles = StyleSheet.create({
 		marginBottom: 24,
 	},
 	button: {
-		backgroundColor: '#007AFF',
+		backgroundColor: shared.primary,
 		paddingHorizontal: 24,
 		paddingVertical: 12,
 		borderRadius: 8,

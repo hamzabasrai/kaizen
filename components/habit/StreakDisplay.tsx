@@ -19,7 +19,7 @@ export const StreakDisplay = React.memo(function StreakDisplay({
 	return (
 		<View style={styles.container}>
 			<View style={styles.stat}>
-				<Ionicons name="flame" size={16} color="#FF9500" />
+				<Ionicons name="flame" size={16} color={colors.warning} />
 				<Text style={[styles.value, { color: colors.text }]}>
 					{currentStreak}
 				</Text>
@@ -28,10 +28,10 @@ export const StreakDisplay = React.memo(function StreakDisplay({
 				</Text>
 			</View>
 
-			<View style={styles.divider} />
+			<View style={[styles.divider, { backgroundColor: colors.divider }]} />
 
 			<View style={styles.stat}>
-				<Ionicons name="trophy" size={16} color="#FFD60A" />
+				<Ionicons name="trophy" size={16} color={colors.trophy} />
 				<Text style={[styles.value, { color: colors.text }]}>
 					{longestStreak}
 				</Text>
@@ -40,10 +40,10 @@ export const StreakDisplay = React.memo(function StreakDisplay({
 				</Text>
 			</View>
 
-			<View style={styles.divider} />
+			<View style={[styles.divider, { backgroundColor: colors.divider }]} />
 
 			<View style={styles.stat}>
-				<Ionicons name="checkmark-circle" size={16} color="#34C759" />
+				<Ionicons name="checkmark-circle" size={16} color={colors.success} />
 				<Text style={[styles.value, { color: colors.text }]}>
 					{completionRate}%
 				</Text>
@@ -77,7 +77,6 @@ const styles = StyleSheet.create({
 	divider: {
 		width: 1,
 		height: 20,
-		backgroundColor: '#e5e5e5',
 		opacity: 0.5,
 	},
 });

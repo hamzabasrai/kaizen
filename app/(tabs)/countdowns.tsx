@@ -17,14 +17,14 @@ export default function CountdownsScreen() {
 
 	const renderCountdown = ({ item }: { item: (typeof countdowns)[0] }) => {
 		let daysText = '';
-		let daysColor = '#007AFF';
+		let daysColor: string = colors.primary;
 
 		if (item.is_today) {
 			daysText = 'Today!';
-			daysColor = '#34C759';
+			daysColor = colors.success;
 		} else if (item.is_overdue) {
 			daysText = `${item.days_remaining} days overdue`;
-			daysColor = '#FF3B30';
+			daysColor = colors.error;
 		} else {
 			daysText = `${item.days_remaining} days left`;
 		}

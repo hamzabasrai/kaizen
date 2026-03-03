@@ -1,6 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import { Href, Link } from 'expo-router';
 import { StyleSheet, TouchableOpacity } from 'react-native';
+import { useTheme } from '~/store/useTheme';
 
 interface FABProps {
 	href: Href;
@@ -8,9 +9,14 @@ interface FABProps {
 }
 
 export function FAB({ href, label }: FABProps) {
+	const { colors } = useTheme();
+
 	return (
 		<Link href={href} asChild>
-			<TouchableOpacity style={styles.fab} accessibilityLabel={label}>
+			<TouchableOpacity
+				style={[styles.fab, { backgroundColor: colors.primary }]}
+				accessibilityLabel={label}
+			>
 				<Ionicons name="add" size={32} color="#fff" />
 			</TouchableOpacity>
 		</Link>
@@ -25,7 +31,6 @@ const styles = StyleSheet.create({
 		width: 56,
 		height: 56,
 		borderRadius: 28,
-		backgroundColor: '#007AFF',
 		alignItems: 'center',
 		justifyContent: 'center',
 		shadowColor: '#000',

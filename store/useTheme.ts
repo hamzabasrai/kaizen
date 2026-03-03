@@ -7,20 +7,35 @@ import { UserSettings } from '~/types';
 
 // --- Palette ---
 
+/** Mode-independent semantic colors (iOS system palette). */
+export const shared = {
+	primary: '#007AFF',
+	success: '#34C759',
+	error: '#FF3B30',
+	warning: '#FF9500',
+	trophy: '#FFD60A',
+} as const;
+
 const palette = {
 	light: {
+		...shared,
 		background: '#fff',
 		surface: '#f2f2f7',
 		text: '#000',
 		textSecondary: '#666',
 		placeholder: '#999',
+		gridEmpty: '#ebedf0',
+		divider: '#e5e5e5',
 	},
 	dark: {
+		...shared,
 		background: '#000',
 		surface: '#2c2c2e',
 		text: '#fff',
 		textSecondary: '#888',
 		placeholder: '#888',
+		gridEmpty: '#2d333b',
+		divider: '#48484a',
 	},
 } as const;
 

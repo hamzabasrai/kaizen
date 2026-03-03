@@ -67,7 +67,7 @@ export default function SignupScreen() {
 				]}
 			>
 				<View style={styles.successContainer}>
-					<Ionicons name="checkmark-circle" size={64} color="#34C759" />
+					<Ionicons name="checkmark-circle" size={64} color={colors.success} />
 					<Text
 						style={[styles.successTitle, { color: colors.text }]}
 					>

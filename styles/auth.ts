@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { shared } from '~/store/useTheme';
 
 export const authStyles = StyleSheet.create({
 	container: {
@@ -22,13 +23,13 @@ export const authStyles = StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 		gap: 8,
-		backgroundColor: '#FF3B3020',
+		backgroundColor: `${shared.error}20`,
 		padding: 12,
 		borderRadius: 8,
 		marginBottom: 16,
 	},
 	errorText: {
-		color: '#FF3B30',
+		color: shared.error,
 		fontSize: 14,
 		flex: 1,
 	},
@@ -48,7 +49,7 @@ export const authStyles = StyleSheet.create({
 		alignItems: 'center',
 	},
 	primaryButton: {
-		backgroundColor: '#007AFF',
+		backgroundColor: shared.primary,
 	},
 	buttonText: {
 		fontSize: 16,
@@ -61,7 +62,7 @@ export const authStyles = StyleSheet.create({
 		marginTop: 32,
 	},
 	linkText: {
-		color: '#007AFF',
+		color: shared.primary,
 		fontWeight: '600',
 	},
 });
