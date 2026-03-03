@@ -1,5 +1,5 @@
 import { Ionicons } from '@expo/vector-icons';
-import { Link, router } from 'expo-router';
+import { Link } from 'expo-router';
 import { useState } from 'react';
 import {
 	ActivityIndicator,
@@ -28,7 +28,6 @@ export default function LoginScreen() {
 		try {
 			setError('');
 			await signIn(email, password);
-			router.replace('/(tabs)/habits');
 		} catch (err: any) {
 			setError(err.message || 'Failed to sign in');
 		}
@@ -38,7 +37,6 @@ export default function LoginScreen() {
 		try {
 			setError('');
 			await signInAnonymously();
-			router.replace('/(tabs)/habits');
 		} catch (err: any) {
 			setError(err.message || 'Failed to sign in anonymously');
 		}
