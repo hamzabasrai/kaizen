@@ -186,7 +186,7 @@ export const useHabitsStore = create<HabitsState>()(
 		{
 			name: 'habits-storage',
 			storage: createJSONStorage(() => AsyncStorage),
-			partialize: state => ({ habits: state.habits }),
+			partialize: state => ({ habits: state.habits, completions: state.completions }),
 		},
 	),
 );
