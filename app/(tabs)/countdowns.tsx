@@ -12,7 +12,8 @@ import { useCountdownsStore } from '~/store/useCountdownsStore';
 import { useTheme } from '~/store/useTheme';
 
 export default function CountdownsScreen() {
-	const { countdowns, fetchCountdowns, isLoading } = useCountdownsStore();
+	const { countdowns, fetchCountdowns, loadingCount } = useCountdownsStore();
+	const isLoading = loadingCount > 0;
 	const { isDark } = useTheme();
 
 	useEffect(() => {

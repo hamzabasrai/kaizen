@@ -9,7 +9,6 @@ interface HabitsState {
 	currentHabit: HabitWithStats | null;
 	completions: Record<string, HabitCompletion[]>;
 	loadingCount: number;
-	isLoading: boolean;
 	error: string | null;
 
 	// Actions
@@ -37,9 +36,6 @@ export const useHabitsStore = create<HabitsState>()(
 			currentHabit: null,
 			completions: {},
 			loadingCount: 0,
-			get isLoading() {
-				return get().loadingCount > 0;
-			},
 			error: null,
 
 			fetchHabits: async () => {

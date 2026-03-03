@@ -8,7 +8,6 @@ interface CountdownsState {
 	countdowns: CountdownWithDaysRemaining[];
 	currentCountdown: Countdown | null;
 	loadingCount: number;
-	isLoading: boolean;
 	error: string | null;
 
 	// Actions
@@ -30,9 +29,6 @@ export const useCountdownsStore = create<CountdownsState>()(
 			countdowns: [],
 			currentCountdown: null,
 			loadingCount: 0,
-			get isLoading() {
-				return get().loadingCount > 0;
-			},
 			error: null,
 
 			fetchCountdowns: async () => {

@@ -19,7 +19,8 @@ interface HabitWithCompletions extends Habit {
 }
 
 export default function HabitsScreen() {
-	const { habits, fetchHabits, isLoading } = useHabitsStore();
+	const { habits, fetchHabits, loadingCount } = useHabitsStore();
+	const isLoading = loadingCount > 0;
 	const { isDark } = useTheme();
 	const [habitsWithCompletions, setHabitsWithCompletions] = useState<
 		HabitWithCompletions[]
