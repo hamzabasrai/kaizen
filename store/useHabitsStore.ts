@@ -8,6 +8,7 @@ interface HabitsState {
 	habits: Habit[];
 	currentHabit: HabitWithStats | null;
 	completions: Record<string, HabitCompletion[]>;
+	loadingCount: number;
 	isLoading: boolean;
 	error: string | null;
 
@@ -35,90 +36,93 @@ export const useHabitsStore = create<HabitsState>()(
 			habits: [],
 			currentHabit: null,
 			completions: {},
-			isLoading: false,
+			loadingCount: 0,
+			get isLoading() {
+				return get().loadingCount > 0;
+			},
 			error: null,
 
 			fetchHabits: async () => {
-				set({ isLoading: true, error: null });
+				set(s => ({ loadingCount: s.loadingCount + 1, error: null }));
 				try {
 					const habits = await habitService.getHabits();
-					set({ habits, isLoading: false });
+					set(s => ({ habits, loadingCount: s.loadingCount - 1 }));
 				} catch (err) {
-					set({
+					set(s => ({
 						error:
 							err instanceof Error ? err.message : 'Failed to fetch habits',
-						isLoading: false,
-					});
+						loadingCount: s.loadingCount - 1,
+					}));
 				}
 			},
 
 			fetchHabit: async (id: string) => {
-				set({ isLoading: true, error: null });
+				set(s => ({ loadingCount: s.loadingCount + 1, error: null }));
 				try {
 					const habit = await habitService.getHabitWithStats(id);
-					set({ currentHabit: habit, isLoading: false });
+					set(s => ({ currentHabit: habit, loadingCount: s.loadingCount - 1 }));
 				} catch (err) {
-					set({
+					set(s => ({
 						error: err instanceof Error ? err.message : 'Failed to fetch habit',
-						isLoading: false,
-					});
+						loadingCount: s.loadingCount - 1,
+					}));
 				}
 			},
 
 			createHabit: async habit => {
-				set({ isLoading: true, error: null });
+				set(s => ({ loadingCount: s.loadingCount + 1, error: null }));
 				try {
 					const newHabit = await habitService.createHabit(habit);
-					set(state => ({
-						habits: [newHabit, ...state.habits],
-						isLoading: false,
+					set(s => ({
+						habits: [newHabit, ...s.habits],
+						loadingCount: s.loadingCount - 1,
 					}));
 				} catch (err) {
-					set({
+					set(s => ({
 						error:
 							err instanceof Error ? err.message : 'Failed to create habit',
-						isLoading: false,
-					});
+						loadingCount: s.loadingCount - 1,
+					}));
 				}
 			},
 
 			updateHabit: async (id, updates) => {
-				set({ isLoading: true, error: null });
+				set(s => ({ loadingCount: s.loadingCount + 1, error: null }));
 				try {
 					const updatedHabit = await habitService.updateHabit(id, updates);
-					set(state => ({
-						habits: state.habits.map(h => (h.id === id ? updatedHabit : h)),
+					set(s => ({
+						habits: s.habits.map(h => (h.id === id ? updatedHabit : h)),
 						currentHabit:
-							state.currentHabit?.id === id
-								? { ...state.currentHabit, ...updatedHabit }
-								: state.currentHabit,
-						isLoading: false,
+							s.currentHabit?.id === id
+								? { ...s.currentHabit, ...updatedHabit }
+								: s.currentHabit,
+						loadingCount: s.loadingCount - 1,
 					}));
 				} catch (err) {
-					set({
+					set(s => ({
 						error:
 							err instanceof Error ? err.message : 'Failed to update habit',
-						isLoading: false,
-					});
+						loadingCount: s.loadingCount - 1,
+					}));
 				}
 			},
 
 			deleteHabit: async id => {
-				set({ isLoading: true, error: null });
+				set(s => ({ loadingCount: s.loadingCount + 1, error: null }));
 				try {
 					await habitService.deleteHabit(id);
-					set(state => ({
-						habits: state.habits.filter(h => h.id !== id),
+					set(s => ({
+						habits: s.habits.filter(h => h.id !== id),
 						currentHabit:
-							state.currentHabit?.id === id ? null : state.currentHabit,
-						isLoading: false,
+							s.currentHabit?.id === id ? null : s.currentHabit,
+						loadingCount: s.loadingCount - 1,
 					}));
 				} catch (err) {
-					set({
+					set(s => ({
 						error:
 							err instanceof Error ? err.message : 'Failed to delete habit',
-						isLoading: false,
-					});
+						loadingCount: s.loadingCount - 1,
+					}));
 				}
 			},
 
@@ -152,7 +156,7 @@ export const useHabitsStore = create<HabitsState>()(
 					habits: [],
 					currentHabit: null,
 					completions: {},
-					isLoading: false,
+					loadingCount: 0,
 					error: null,
 				}),
 		}),

@@ -7,6 +7,7 @@ import { Countdown, CountdownWithDaysRemaining } from '~/types/countdown';
 interface CountdownsState {
 	countdowns: CountdownWithDaysRemaining[];
 	currentCountdown: Countdown | null;
+	loadingCount: number;
 	isLoading: boolean;
 	error: string | null;
 
@@ -28,61 +29,64 @@ export const useCountdownsStore = create<CountdownsState>()(
 		(set, get) => ({
 			countdowns: [],
 			currentCountdown: null,
-			isLoading: false,
+			loadingCount: 0,
+			get isLoading() {
+				return get().loadingCount > 0;
+			},
 			error: null,
 
 			fetchCountdowns: async () => {
-				set({ isLoading: true, error: null });
+				set(s => ({ loadingCount: s.loadingCount + 1, error: null }));
 				try {
 					const countdowns =
 						await countdownService.getCountdownsWithDaysRemaining();
-					set({ countdowns, isLoading: false });
+					set(s => ({ countdowns, loadingCount: s.loadingCount - 1 }));
 				} catch (err) {
-					set({
+					set(s => ({
 						error:
 							err instanceof Error ? err.message : 'Failed to fetch countdowns',
-						isLoading: false,
-					});
+						loadingCount: s.loadingCount - 1,
+					}));
 				}
 			},
 
 			fetchCountdown: async (id: string) => {
-				set({ isLoading: true, error: null });
+				set(s => ({ loadingCount: s.loadingCount + 1, error: null }));
 				try {
 					const countdown = await countdownService.getCountdownById(id);
-					set({ currentCountdown: countdown, isLoading: false });
+					set(s => ({ currentCountdown: countdown, loadingCount: s.loadingCount - 1 }));
 				} catch (err) {
-					set({
+					set(s => ({
 						error:
 							err instanceof Error ? err.message : 'Failed to fetch countdown',
-						isLoading: false,
-					});
+						loadingCount: s.loadingCount - 1,
+					}));
 				}
 			},
 
 			createCountdown: async countdown => {
-				set({ isLoading: true, error: null });
+				set(s => ({ loadingCount: s.loadingCount + 1, error: null }));
 				try {
 					await countdownService.createCountdown(countdown);
 					await get().fetchCountdowns();
 				} catch (err) {
-					set({
+					set(s => ({
 						error:
 							err instanceof Error ? err.message : 'Failed to create countdown',
-						isLoading: false,
-					});
+						loadingCount: s.loadingCount - 1,
+					}));
 				}
 			},
 
 			updateCountdown: async (id, updates) => {
-				set({ isLoading: true, error: null });
+				set(s => ({ loadingCount: s.loadingCount + 1, error: null }));
 				try {
 					const updatedCountdown = await countdownService.updateCountdown(
 						id,
 						updates,
 					);
-					set(state => ({
-						countdowns: state.countdowns.map(c =>
+					set(s => ({
+						countdowns: s.countdowns.map(c =>
 							c.id === id
 								? {
 										...c,
@@ -94,52 +98,52 @@ export const useCountdownsStore = create<CountdownsState>()(
 								: c,
 						),
 						currentCountdown:
-							state.currentCountdown?.id === id
+							s.currentCountdown?.id === id
 								? updatedCountdown
-								: state.currentCountdown,
-						isLoading: false,
+								: s.currentCountdown,
+						loadingCount: s.loadingCount - 1,
 					}));
 				} catch (err) {
-					set({
+					set(s => ({
 						error:
 							err instanceof Error ? err.message : 'Failed to update countdown',
-						isLoading: false,
-					});
+						loadingCount: s.loadingCount - 1,
+					}));
 				}
 			},
 
 			deleteCountdown: async id => {
-				set({ isLoading: true, error: null });
+				set(s => ({ loadingCount: s.loadingCount + 1, error: null }));
 				try {
 					await countdownService.deleteCountdown(id);
-					set(state => ({
-						countdowns: state.countdowns.filter(c => c.id !== id),
+					set(s => ({
+						countdowns: s.countdowns.filter(c => c.id !== id),
 						currentCountdown:
-							state.currentCountdown?.id === id ? null : state.currentCountdown,
-						isLoading: false,
+							s.currentCountdown?.id === id ? null : s.currentCountdown,
+						loadingCount: s.loadingCount - 1,
 					}));
 				} catch (err) {
-					set({
+					set(s => ({
 						error:
 							err instanceof Error ? err.message : 'Failed to delete countdown',
-						isLoading: false,
-					});
+						loadingCount: s.loadingCount - 1,
+					}));
 				}
 			},
 
 			markComplete: async id => {
-				set({ isLoading: true, error: null });
+				set(s => ({ loadingCount: s.loadingCount + 1, error: null }));
 				try {
 					await countdownService.markCountdownComplete(id);
 					await get().fetchCountdowns();
 				} catch (err) {
-					set({
+					set(s => ({
 						error:
 							err instanceof Error
 								? err.message
 								: 'Failed to mark countdown complete',
-						isLoading: false,
-					});
+						loadingCount: s.loadingCount - 1,
+					}));
 				}
 			},
 
@@ -149,7 +153,7 @@ export const useCountdownsStore = create<CountdownsState>()(
 				set({
 					countdowns: [],
 					currentCountdown: null,
-					isLoading: false,
+					loadingCount: 0,
 					error: null,
 				}),
 		}),
