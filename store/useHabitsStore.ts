@@ -26,6 +26,7 @@ interface HabitsState {
 		completed: boolean,
 	) => Promise<void>;
 	clearError: () => void;
+	reset: () => void;
 }
 
 export const useHabitsStore = create<HabitsState>()(
@@ -145,6 +146,15 @@ export const useHabitsStore = create<HabitsState>()(
 			},
 
 			clearError: () => set({ error: null }),
+
+			reset: () =>
+				set({
+					habits: [],
+					currentHabit: null,
+					completions: {},
+					isLoading: false,
+					error: null,
+				}),
 		}),
 		{
 			name: 'habits-storage',

@@ -1,6 +1,8 @@
 import { Session, User } from '@supabase/supabase-js';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { supabase } from '~/lib/supabase';
+import { useCountdownsStore } from '~/store/useCountdownsStore';
+import { useHabitsStore } from '~/store/useHabitsStore';
 
 interface AuthContextType {
 	user: User | null;
@@ -64,6 +66,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 	const signOut = async () => {
 		const { error } = await supabase.auth.signOut();
 		if (error) throw error;
+		useHabitsStore.getState().reset();
+		useCountdownsStore.getState().reset();
 	};
 
 	const value = {

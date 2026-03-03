@@ -20,6 +20,7 @@ interface CountdownsState {
 	deleteCountdown: (id: string) => Promise<void>;
 	markComplete: (id: string) => Promise<void>;
 	clearError: () => void;
+	reset: () => void;
 }
 
 export const useCountdownsStore = create<CountdownsState>()(
@@ -143,6 +144,14 @@ export const useCountdownsStore = create<CountdownsState>()(
 			},
 
 			clearError: () => set({ error: null }),
+
+			reset: () =>
+				set({
+					countdowns: [],
+					currentCountdown: null,
+					isLoading: false,
+					error: null,
+				}),
 		}),
 		{
 			name: 'countdowns-storage',
