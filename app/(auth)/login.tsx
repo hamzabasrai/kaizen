@@ -12,6 +12,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAuth } from '~/context/AuthContext';
 import { useTheme } from '~/store/useTheme';
+import { authStyles } from '~/styles/auth';
 
 export default function LoginScreen() {
 	const [email, setEmail] = useState('');
@@ -51,28 +52,28 @@ export default function LoginScreen() {
 
 	return (
 		<SafeAreaView
-			style={[styles.container, { backgroundColor: isDark ? '#000' : '#fff' }]}
+			style={[authStyles.container, { backgroundColor: isDark ? '#000' : '#fff' }]}
 		>
-			<View style={styles.header}>
-				<Text style={[styles.title, { color: isDark ? '#fff' : '#000' }]}>
+			<View style={authStyles.header}>
+				<Text style={[authStyles.title, { color: isDark ? '#fff' : '#000' }]}>
 					Welcome to Kaizen
 				</Text>
-				<Text style={[styles.subtitle, { color: isDark ? '#888' : '#666' }]}>
+				<Text style={[authStyles.subtitle, { color: isDark ? '#888' : '#666' }]}>
 					Track your habits and countdowns
 				</Text>
 			</View>
 
 			{error ? (
-				<View style={styles.errorContainer}>
+				<View style={authStyles.errorContainer}>
 					<Ionicons name="alert-circle" size={20} color="#FF3B30" />
-					<Text style={styles.errorText}>{error}</Text>
+					<Text style={authStyles.errorText}>{error}</Text>
 				</View>
 			) : null}
 
-			<View style={styles.form}>
+			<View style={authStyles.form}>
 				<TextInput
 					style={[
-						styles.input,
+						authStyles.input,
 						{
 							backgroundColor: isDark ? '#2c2c2e' : '#f2f2f7',
 							color: isDark ? '#fff' : '#000',
@@ -92,7 +93,7 @@ export default function LoginScreen() {
 				<TextInput
 					ref={passwordRef}
 					style={[
-						styles.input,
+						authStyles.input,
 						{
 							backgroundColor: isDark ? '#2c2c2e' : '#f2f2f7',
 							color: isDark ? '#fff' : '#000',
@@ -109,20 +110,20 @@ export default function LoginScreen() {
 				/>
 
 				<TouchableOpacity
-					style={[styles.button, styles.primaryButton]}
+					style={[authStyles.button, authStyles.primaryButton]}
 					onPress={handleLogin}
 					disabled={isLoading}
 				>
 					{isLoading ? (
 						<ActivityIndicator color="#fff" />
 					) : (
-						<Text style={styles.buttonText}>Sign In</Text>
+						<Text style={authStyles.buttonText}>Sign In</Text>
 					)}
 				</TouchableOpacity>
 
 				<TouchableOpacity
 					style={[
-						styles.button,
+						authStyles.button,
 						styles.anonymousButton,
 						{ backgroundColor: isDark ? '#2c2c2e' : '#e5e5e5' },
 					]}
@@ -130,20 +131,20 @@ export default function LoginScreen() {
 					disabled={isLoading}
 				>
 					<Text
-						style={[styles.buttonText, { color: isDark ? '#fff' : '#000' }]}
+						style={[authStyles.buttonText, { color: isDark ? '#fff' : '#000' }]}
 					>
 						Continue Anonymously
 					</Text>
 				</TouchableOpacity>
 			</View>
 
-			<View style={styles.footer}>
+			<View style={authStyles.footer}>
 				<Text style={{ color: isDark ? '#888' : '#666' }}>
 					Don&apos;t have an account?{' '}
 				</Text>
 				<Link href="/(auth)/signup" asChild>
 					<TouchableOpacity>
-						<Text style={styles.linkText}>Sign Up</Text>
+						<Text style={authStyles.linkText}>Sign Up</Text>
 					</TouchableOpacity>
 				</Link>
 			</View>
@@ -152,70 +153,7 @@ export default function LoginScreen() {
 }
 
 const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		padding: 24,
-		justifyContent: 'center',
-	},
-	header: {
-		alignItems: 'center',
-		marginBottom: 48,
-	},
-	title: {
-		fontSize: 32,
-		fontWeight: 'bold',
-		marginBottom: 8,
-	},
-	subtitle: {
-		fontSize: 16,
-	},
-	errorContainer: {
-		flexDirection: 'row',
-		alignItems: 'center',
-		gap: 8,
-		backgroundColor: '#FF3B3020',
-		padding: 12,
-		borderRadius: 8,
-		marginBottom: 16,
-	},
-	errorText: {
-		color: '#FF3B30',
-		fontSize: 14,
-		flex: 1,
-	},
-	form: {
-		gap: 16,
-	},
-	input: {
-		height: 48,
-		borderRadius: 8,
-		paddingHorizontal: 16,
-		fontSize: 16,
-	},
-	button: {
-		height: 48,
-		borderRadius: 8,
-		justifyContent: 'center',
-		alignItems: 'center',
-	},
-	primaryButton: {
-		backgroundColor: '#007AFF',
-	},
 	anonymousButton: {
 		marginTop: 8,
-	},
-	buttonText: {
-		fontSize: 16,
-		fontWeight: '600',
-		color: '#fff',
-	},
-	footer: {
-		flexDirection: 'row',
-		justifyContent: 'center',
-		marginTop: 32,
-	},
-	linkText: {
-		color: '#007AFF',
-		fontWeight: '600',
 	},
 });
