@@ -33,8 +33,8 @@ export default function LoginScreen() {
 		try {
 			setError('');
 			await signIn(trimmedEmail, password);
-		} catch (err: any) {
-			setError(err.message || 'Failed to sign in');
+		} catch (err) {
+			setError(err instanceof Error ? err.message : 'Failed to sign in');
 		}
 	};
 
@@ -42,8 +42,8 @@ export default function LoginScreen() {
 		try {
 			setError('');
 			await signInAnonymously();
-		} catch (err: any) {
-			setError(err.message || 'Failed to sign in anonymously');
+		} catch (err) {
+			setError(err instanceof Error ? err.message : 'Failed to sign in anonymously');
 		}
 	};
 
