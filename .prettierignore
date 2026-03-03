@@ -1,0 +1,6 @@
+dist/
+node_modules/
+.expo/
+ios/
+android/
+lib/database.types.ts
