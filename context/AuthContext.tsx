@@ -23,32 +23,40 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
-		// Server-verify the current user on startup
-		authService
-			.getCurrentUser()
-			.then(user => {
-				setUser(user);
-				return authService.getSession();
-			})
-			.then(session => {
-				setSession(session);
-			})
-			.catch(() => {
-				setUser(null);
-				setSession(null);
-			})
-			.finally(() => {
-				setIsLoading(false);
-			});
+		let initialLoadDone = false;
 
-		// Listen for auth changes
+		// Listen for auth changes — takes priority once fired
 		const { data: { subscription } } = authService.onAuthStateChange(
 			(_event, session) => {
+				initialLoadDone = true;
 				setSession(session);
 				setUser(session?.user ?? null);
 				setIsLoading(false);
 			},
 		);
+
+		// Server-verify the current user on startup
+		authService
+			.getCurrentUser()
+			.then(user => {
+				if (initialLoadDone) return;
+				setUser(user);
+				return authService.getSession();
+			})
+			.then(session => {
+				if (initialLoadDone || !session) return;
+				setSession(session);
+			})
+			.catch(() => {
+				if (initialLoadDone) return;
+				setUser(null);
+				setSession(null);
+			})
+			.finally(() => {
+				if (!initialLoadDone) {
+					setIsLoading(false);
+				}
+			});
 
 		return () => subscription.unsubscribe();
 	}, []);
