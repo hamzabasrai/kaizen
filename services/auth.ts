@@ -79,12 +79,13 @@ export async function updateUserSettings(
 	const profile = await getProfile(userId);
 	if (!profile) throw new Error('Profile not found');
 
-	const currentSettings = (profile.settings as unknown as UserSettings) || {};
+	const currentSettings = profile.settings || {
+		theme: 'system' as const,
+		notifications_enabled: true,
+	};
 	const newSettings = { ...currentSettings, ...settings };
 
-	return await updateProfile(userId, {
-		settings: newSettings as unknown as Profile['settings'],
-	});
+	return await updateProfile(userId, { settings: newSettings });
 }
 
 export function onAuthStateChange(
