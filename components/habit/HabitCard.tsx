@@ -12,7 +12,7 @@ interface HabitCardProps {
 	onPress?: () => void;
 }
 
-export function HabitCard({ habit, completions, onPress }: HabitCardProps) {
+export const HabitCard = React.memo(function HabitCard({ habit, completions, onPress }: HabitCardProps) {
 	const { isDark } = useTheme();
 
 	const stats = React.useMemo(() => {
@@ -60,7 +60,7 @@ export function HabitCard({ habit, completions, onPress }: HabitCardProps) {
 			/>
 		</TouchableOpacity>
 	);
-}
+});
 
 const styles = StyleSheet.create({
 	card: {

@@ -9,7 +9,7 @@ interface StreakDisplayProps {
 	completionRate: number;
 }
 
-export function StreakDisplay({
+export const StreakDisplay = React.memo(function StreakDisplay({
 	currentStreak,
 	longestStreak,
 	completionRate,
@@ -53,7 +53,7 @@ export function StreakDisplay({
 			</View>
 		</View>
 	);
-}
+});
 
 const styles = StyleSheet.create({
 	container: {

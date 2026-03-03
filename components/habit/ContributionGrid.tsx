@@ -8,7 +8,7 @@ interface ContributionGridProps {
 	onPress?: () => void;
 }
 
-export function ContributionGrid({
+export const ContributionGrid = React.memo(function ContributionGrid({
 	completions,
 	color = '#39d353',
 	onPress,
@@ -80,7 +80,7 @@ export function ContributionGrid({
 			</View>
 		</TouchableOpacity>
 	);
-}
+});
 
 const styles = StyleSheet.create({
 	container: {
