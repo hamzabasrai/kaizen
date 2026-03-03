@@ -161,6 +161,14 @@ export const useCountdownsStore = create<CountdownsState>()(
 			name: 'countdowns-storage',
 			storage: createJSONStorage(() => AsyncStorage),
 			partialize: state => ({ countdowns: state.countdowns }),
+			onRehydrateStorage: () => state => {
+				if (state?.countdowns) {
+					state.countdowns = state.countdowns.map(c => ({
+						...c,
+						...countdownService.calculateDaysRemaining(c.target_date),
+					}));
+				}
+			},
 		},
 	),
 );
