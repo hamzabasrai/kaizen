@@ -80,7 +80,7 @@ export async function updateUserSettings(
 	if (!profile) throw new Error('Profile not found');
 
 	const currentSettings = profile.settings || {
-		theme: 'system' as const,
+		theme: 'system',
 		notifications_enabled: true,
 	};
 	const newSettings = { ...currentSettings, ...settings };
